@@ -1,24 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import { useState } from "react";
+import { NavBar } from "./navigation/NavBar";
+import { Login } from "./auth/Login";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  Switch,
+} from "react-router-dom";
+import { Register } from "./auth/Register";
+
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
+
+const lightTheme = createTheme({
+  palette: {
+    mode: "light",
+  },
+});
+
+
 
 function App() {
+  const [isDark, setIsDark] = useState(false);
+  const toggleThemeHandler = () => {
+    setIsDark(!isDark);
+  };
+  const theme = isDark ? darkTheme : lightTheme;
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+        <CssBaseline />
+        <NavBar isDark={isDark} setTheme={toggleThemeHandler} />
+          <Routes>
+            <Route path="/regisztracio" element={<Register/>}></Route>
+            <Route path="/bejelentkezes" element={<Login/>} >
+            </Route>
+            <Route path="/" >
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
+    </>
   );
 }
 

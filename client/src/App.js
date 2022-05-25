@@ -2,8 +2,10 @@ import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { useState } from "react";
 import { NavBar } from "./navigation/NavBar";
 import { Login } from "./auth/Login";
-import { BrowserRouter, Route, Routes, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Register } from "./auth/Register";
+import { Home } from "./site/Home";
+import { Tasks } from "./site/Tasks";
 
 const darkTheme = createTheme({
   palette: {
@@ -17,15 +19,8 @@ const lightTheme = createTheme({
   },
 });
 
-const MainPage = () => {
-  return (
-    <>
-      <h1>Main Page</h1>
-    </>
-  );
-};
 function App() {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true);
   const toggleThemeHandler = () => {
     setIsDark(!isDark);
   };
@@ -37,9 +32,10 @@ function App() {
           <CssBaseline />
           <NavBar isDark={isDark} setTheme={toggleThemeHandler} />
           <Routes>
+            <Route path="*" element={<Home />}></Route>
             <Route path="/regisztracio" element={<Register />}></Route>
             <Route path="/bejelentkezes" element={<Login />}></Route>
-            <Route path="/" element={<MainPage />}></Route>
+            <Route path="/feladatbank" element={<Tasks />}></Route>
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

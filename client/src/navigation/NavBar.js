@@ -1,22 +1,30 @@
 import {
+  Avatar,
   Button,
   Container,
   Divider,
   Link,
   Tab,
   Tabs,
-
 } from "@mui/material";
-import {Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { useState } from "react";
 
+import { useDispatch, useSelector } from "react-redux";
+import { logout, selectLoggedInUser } from "../state/authSlice";
+import { Box } from "@mui/system";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 export const NavBar = ({ isDark, setTheme }) => {
-
   const currentRoute = window.location.pathname;
-  const [currentTab, setCurrentTab] = useState(currentRoute !== "/" ? currentRoute : false);
+  const [currentTab, setCurrentTab] = useState(
+    currentRoute !== "/" ? currentRoute : false
+  );
+  const dispatch = useDispatch();
+
+  const user = useSelector(selectLoggedInUser);
 
   const handleChange = (event, newValue) => {
     setCurrentTab(newValue);
@@ -33,6 +41,7 @@ export const NavBar = ({ isDark, setTheme }) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          py: 1,
         }}
       >
         <Link
@@ -46,36 +55,65 @@ export const NavBar = ({ isDark, setTheme }) => {
         >
           React feladatsorok
         </Link>
-
-        <Tabs value={currentTab} onChange={handleChange}>
+        
+        <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+        }}>
+      <Tabs value={currentTab} onChange={handleChange}>
+        <Tab
+          label="Feladatbank"
+          value="/feladatbank"
+          component={RouterLink}
+          to="/feladatbank"
+        />
+        {user && (
           <Tab
-            label="Feladatbank"
-            value="/feladatbank"
+            label="Feladatsoraim"
+            value="/feladatsoraim"
             component={RouterLink}
-            to="/feladatbank"
+            to="/feladatsoraim"
           />
+        )}
+        {user && (
           <Tab
-            label="Bejelentkezés"
-            value="/bejelentkezes"
+            label="Szerkesztett feladatsor"
+            value="/szerkesztett"
             component={RouterLink}
-            to="/bejelentkezes"
+            to="/szerkesztett"
           />
-          <Tab
-            label="Regisztráció"
-            value="/regisztracio"
-            component={RouterLink}
-            to="/regisztracio"
-          />
-          <Tab
-            label="Kijelentkezés"
-            value="/kijelentkezes"
-            component={RouterLink}
-            to="/kijelentkezes"
-          />
-        </Tabs>
-        <Button value={isDark} selected={isDark} onClick={setTheme}>
-          {isDark ? <LightModeIcon /> : <DarkModeIcon />}
-        </Button>
+        )}
+      </Tabs>
+          {!user && (
+            <Button component={RouterLink} to="/bejelentkezes" >
+              Bejelentkezés
+            </Button>
+          )}
+          {!user && (
+            <Button component={RouterLink} to="/regisztracio" color="secondary">
+              Regisztráció
+            </Button>
+          )}
+          {user && (
+            <Button onClick={() => dispatch(logout())} color="error" >
+              Kijelentkezés
+            </Button>
+          )}
+          {user && (
+            <Button component={RouterLink} to="/profil" color="primary">
+              <AccountCircleIcon />
+            </Button>
+          )}
+          <Button
+            value={isDark}
+            selected={isDark}
+            onClick={setTheme}
+            color="warning"
+          >
+            {isDark ? <LightModeIcon /> : <DarkModeIcon />}
+          </Button>
+        </Box>
       </Container>
       <Divider />
     </>

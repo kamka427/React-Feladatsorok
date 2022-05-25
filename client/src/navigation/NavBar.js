@@ -14,16 +14,16 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { useState } from "react";
 
 export const NavBar = ({ isDark, setTheme }) => {
-  console.log(window.location.pathname);
 
-  const [currentTab, setCurrentTab] = useState(window.location.pathname);
+  const currentRoute = window.location.pathname;
+  const [currentTab, setCurrentTab] = useState(currentRoute !== "/" ? currentRoute : false);
 
   const handleChange = (event, newValue) => {
     setCurrentTab(newValue);
   };
 
   const resetTab = () => {
-    setCurrentTab("/");
+    setCurrentTab(false);
   };
 
   return (

@@ -7,8 +7,8 @@ _Kliensoldali webprogramozás 2. beadandó_
 Kérlek, töltsétek ki az adataitokkal beadás előtt!
 
 ```txt
-<Hallgató neve>
-<Neptun kódja>
+Neszlényi Kálmán Balázs
+DPU51T
 Kliensoldali webprogramozás - beadandó
 Ezt a megoldást a fent írt hallgató küldte be és készítette a Kliensoldali webprogramozás kurzus számonkéréséhez.
 Kijelentem, hogy ez a megoldás a saját munkám. Nem másoltam vagy használtam harmadik féltől

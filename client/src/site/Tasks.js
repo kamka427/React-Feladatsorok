@@ -4,6 +4,7 @@ import {
   AccordionSummary,
   Button,
   Container,
+  Grid,
   LinearProgress,
   Typography,
 } from "@mui/material";
@@ -34,13 +35,14 @@ export const Tasks = () => {
   };
 
   const tasks = data.data.map((task) => (
-    <Box
+    <Grid
+      item
+      xs={6}
       key={task.id}
       sx={{
         display: "flex",
         gap: 2,
-        my: 2,
-        alignItems: "start",
+        alignItems: "center",
       }}
     >
       <Accordion
@@ -51,9 +53,7 @@ export const Tasks = () => {
         onChange={handleChange(task.id)}
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography sx={{ width: "33%", flexShrink: 0 }}>
-            {task.title}
-          </Typography>
+          <Typography sx={{ width: "33%" }}>{task.title}</Typography>
           <Typography sx={{ color: "text.secondary" }}>
             {task.description.slice(0, 8)}...
           </Typography>
@@ -67,13 +67,16 @@ export const Tasks = () => {
           Kiválasztás
         </Button>
       )}
-    </Box>
+    </Grid>
   ));
 
   return (
-    <Container>
+    <Container
+    >
       <Typography variant="h5">Feladatbank</Typography>
-      {tasks}
+      <Grid container spacing={2} marginY={1}>
+        {tasks}
+      </Grid>
       <Box
         sx={{
           display: "flex",

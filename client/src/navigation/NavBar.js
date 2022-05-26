@@ -1,11 +1,4 @@
-import {
-  Button,
-  Container,
-  Divider,
-  Link,
-  Tab,
-  Tabs,
-} from "@mui/material";
+import { Button, Container, Divider, Link, Tab, Tabs } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
 import LightModeIcon from "@mui/icons-material/LightMode";
@@ -40,7 +33,7 @@ export const NavBar = ({ isDark, setTheme }) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          py: 1,
+          marginBottom: 2,
         }}
       >
         <Link

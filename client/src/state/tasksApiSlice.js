@@ -22,26 +22,46 @@ export const tasksApiSlice = createApi({
   endpoints: (builder) => ({
     getTasks: builder.query({
       query: () => ({
-        url: "tasklists",
+        url: "tasks",
       }),
       transformResponse: (response) => response.data,
     }),
 
     getTasksWithPaginate: builder.query({
       query: (page) => ({
-        url: `tasklists?$skip=${page * 10}&$limit=10`,
+        url: `tasks?$skip=${page * 10}&$limit=10`,
       }),
       transformResponse: (response) => response.data,
     }),
 
     getTaskById: builder.query({
       query: (id) => ({
-        url: `tasklists/${id}`,
+        url: `tasks/${id}`,
+      }),
+      transformResponse: (response) => response.data,
+    }),
+    getTasklists: builder.query({
+      query: () => ({
+        url: "tasks",
       }),
       transformResponse: (response) => response.data,
     }),
 
-    createTask: builder.mutation({
+    getTaskslistsWithPaginate: builder.query({
+      query: (page) => ({
+        url: `tasks?$skip=${page * 10}&$limit=10`,
+      }),
+      transformResponse: (response) => response.data,
+    }),
+
+    getTasklistById: builder.query({
+      query: (id) => ({
+        url: `tasks/${id}`,
+      }),
+      transformResponse: (response) => response.data,
+    }),
+
+    createTasklist: builder.mutation({
       mutation: (task) => ({
         url: "tasklists",
         method: "POST",
@@ -51,7 +71,7 @@ export const tasksApiSlice = createApi({
       }),
     }),
 
-    modifyTask: builder.mutation({
+    modifyTasklist: builder.mutation({
       mutation: (task) => ({
         url: `tasklists/${task.id}`,
         method: "PATCH",
@@ -61,7 +81,7 @@ export const tasksApiSlice = createApi({
       }),
     }),
 
-    deleteTask: builder.mutation({
+    deleteTasklist: builder.mutation({
       mutation: (id) => ({
         url: `tasklists/${id}`,
         method: "DELETE",

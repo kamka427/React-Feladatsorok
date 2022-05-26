@@ -2,8 +2,11 @@ import { Container, Typography } from "@mui/material";
 export const Home = () => {
   return (
     <>
-      <Container>
-        <Typography variant="h5">Főoldal</Typography>
+      <Container
+      >
+        <Typography variant="h5">
+          Főoldal
+        </Typography>
         <Typography variant="h6"> A feladat </Typography>
         <Typography variant="body1">
           A beadandóban olyan webes alkalmazást kell írnod, amelyben egy

@@ -17,15 +17,24 @@ import { selectLoggedInUser } from "../state/authSlice";
 export const Tasks = () => {
   const user = useSelector(selectLoggedInUser);
   const [expanded, setExpanded] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const { isLoading, data } = useGetTasksWithPaginateQuery(currentPage);
+
+  console.log(data);
+
+  const handlePrevPage = () => {
+    currentPage > 0 && setCurrentPage(currentPage - 1);
+  };
+  const handleNextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-  const { isLoading, data } = useGetTasksWithPaginateQuery(0);
   if (isLoading) {
     return <LinearProgress />;
   } else {
-
     const tasks = data.map((task) => (
       <Box
         key={task.id}
@@ -56,9 +65,9 @@ export const Tasks = () => {
           </AccordionDetails>
         </Accordion>
         {user && (
-        <Button variant="contained" color="primary">
-          Kiválasztás
-        </Button>
+          <Button variant="contained" color="primary">
+            Kiválasztás
+          </Button>
         )}
       </Box>
     ));
@@ -67,6 +76,16 @@ export const Tasks = () => {
       <Container>
         <Typography variant="h5">Feladatbank</Typography>
         {tasks}
+        <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+        }}
+        >
+        <Button onClick={handlePrevPage}>Előző</Button>
+        <Typography>{currentPage+1}. oldal</Typography>
+        <Button onClick={handleNextPage}>Következő</Button>
+        </Box>
       </Container>
     );
   }

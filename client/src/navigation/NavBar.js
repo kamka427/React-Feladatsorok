@@ -1,11 +1,11 @@
 import {
-  Avatar,
   Button,
   Container,
   Divider,
   Link,
   Tab,
   Tabs,
+  Typography,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
@@ -36,86 +36,108 @@ export const NavBar = ({ isDark, setTheme }) => {
 
   return (
     <>
-      <Container
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          py: 1,
-        }}
-      >
-        <Link
-          variant="h6"
-          value
-          component={RouterLink}
-          onClick={resetTab}
-          to="/"
-          color="inherit"
-          underline="none"
+      <Box marginBottom={5}>
+        <Container
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            py: 1,
+          }}
         >
-          React feladatsorok
-        </Link>
-        
-        <Box
-        sx={{
-          display: "flex",
-          gap: 2,
-        }}>
-      <Tabs value={currentTab} onChange={handleChange}>
-        <Tab
-          label="Feladatbank"
-          value="/feladatbank"
-          component={RouterLink}
-          to="/feladatbank"
-        />
-        {user && (
-          <Tab
-            label="Feladatsoraim"
-            value="/feladatsoraim"
+          <Link
+            variant="h6"
             component={RouterLink}
-            to="/feladatsoraim"
-          />
-        )}
-        {user && (
-          <Tab
-            label="Szerkesztett feladatsor"
-            value="/szerkesztett"
-            component={RouterLink}
-            to="/szerkesztett"
-          />
-        )}
-      </Tabs>
-          {!user && (
-            <Button component={RouterLink} to="/bejelentkezes" >
-              Bejelentkezés
-            </Button>
-          )}
-          {!user && (
-            <Button component={RouterLink} to="/regisztracio" color="secondary">
-              Regisztráció
-            </Button>
-          )}
-          {user && (
-            <Button onClick={() => dispatch(logout())} color="error" >
-              Kijelentkezés
-            </Button>
-          )}
-          {user && (
-            <Button component={RouterLink} to="/profil" color="primary">
-              <AccountCircleIcon />
-            </Button>
-          )}
-          <Button
-            value={isDark}
-            selected={isDark}
-            onClick={setTheme}
-            color="warning"
+            onClick={resetTab}
+            to="/"
+            color="inherit"
+            underline="none"
           >
-            {isDark ? <LightModeIcon /> : <DarkModeIcon />}
-          </Button>
-        </Box>
-      </Container>
-      <Divider />
+            React feladatsorok
+          </Link>
+
+          <Box
+            sx={{
+              display: "flex",
+            }}
+          >
+            <Tabs value={currentTab} onChange={handleChange}>
+              <Tab
+                label="Feladatbank"
+                value="/feladatbank"
+                component={RouterLink}
+                to="/feladatbank"
+              />
+              {user && (
+                <Tab
+                  label="Feladatsoraim"
+                  value="/feladatsoraim"
+                  component={RouterLink}
+                  to="/feladatsoraim"
+                />
+              )}
+              {user && (
+                <Tab
+                  label="Szerkesztett feladatsor"
+                  value="/szerkesztett"
+                  component={RouterLink}
+                  to="/szerkesztett"
+                />
+              )}
+              {!user && (
+                <Tab
+                  label="Bejelentkezés"
+                  value="/bejelentkezes"
+                  component={RouterLink}
+                  to="/bejelentkezes"
+                  sx={{
+                    color: "primary.main",
+                  }}
+                />
+              )}
+              {!user && (
+                <Tab
+                  label="Regisztráció"
+                  value="/regisztracio"
+                  component={RouterLink}
+                  to="/regisztracio"
+                  sx={{
+                    color: "secondary.main",
+                  }}
+                />
+              )}
+              {user && (
+                <Tab
+                  label="Kijelentkezés"
+                  value="/kijelentkezes"
+                  component={RouterLink}
+                  to="/"
+                  onClick={() => dispatch(logout())}
+                  sx={{
+                    color: "error.main",
+                  }}
+                >
+                  Kijelentkezés
+                </Tab>
+              )}
+            </Tabs>
+            {user && (
+              <Button component={RouterLink} to="/profil" color="inherit">
+                <AccountCircleIcon />
+              </Button>
+            )}
+            <Button
+              value={isDark}
+              selected={isDark}
+              onClick={setTheme}
+              color="inherit"
+            >
+              {isDark ? <LightModeIcon /> : <DarkModeIcon />}
+            </Button>
+          </Box>
+        </Container>
+        <Divider />
+      </Box>
     </>
   );
 };

@@ -31,7 +31,13 @@ export const tasksApiSlice = createApi({
       query: (page) => ({
         url: `tasks?$skip=${page * 10}&$limit=10`,
       }),
-      transformResponse: (response) => response.data,
+      transformResponse: (response) => {
+        return {
+          data: response.data,
+          total: response.total,
+          limit: response.limit
+        };
+      },
     }),
 
     getTaskById: builder.query({
@@ -109,4 +115,9 @@ export const tasksApiSlice = createApi({
 // reducer
 export const tasksApiSliceReducer = tasksApiSlice.reducer;
 // hooks
-export const { useGetTasksWithPaginateQuery, useLoginMutation, useRegisterMutation } = tasksApiSlice;
+export const {
+  useGetTasksWithPaginateQuery,
+  useGetTasklistsQuery,
+  useLoginMutation,
+  useRegisterMutation,
+} = tasksApiSlice;

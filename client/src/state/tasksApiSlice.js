@@ -20,12 +20,54 @@ export const tasksApiSlice = createApi({
   reducerPath: "tasksApi",
   baseQuery,
   endpoints: (builder) => ({
-    // getPuzzles: builder.query({
-    //   query: () => ({
-    //     url: "puzzles",
-    //   }),
-    //   transformResponse: (response) => response.data,
-    // }),
+    getTasks: builder.query({
+      query: () => ({
+        url: "tasklists",
+      }),
+      transformResponse: (response) => response.data,
+    }),
+
+    getTasksWithPaginate: builder.query({
+      query: (page) => ({
+        url: `tasklists?$skip=${page * 10}&$limit=10`,
+      }),
+      transformResponse: (response) => response.data,
+    }),
+
+    getTaskById: builder.query({
+      query: (id) => ({
+        url: `tasklists/${id}`,
+      }),
+      transformResponse: (response) => response.data,
+    }),
+
+    createTask: builder.mutation({
+      mutation: (task) => ({
+        url: "tasklists",
+        method: "POST",
+        body: {
+          ...task,
+        },
+      }),
+    }),
+
+    modifyTask: builder.mutation({
+      mutation: (task) => ({
+        url: `tasklists/${task.id}`,
+        method: "PATCH",
+        body: {
+          ...task,
+        },
+      }),
+    }),
+
+    deleteTask: builder.mutation({
+      mutation: (id) => ({
+        url: `tasklists/${id}`,
+        method: "DELETE",
+      }),
+    }),
+
     register: builder.mutation({
       query: (body) => ({
         url: "users",
@@ -33,6 +75,7 @@ export const tasksApiSlice = createApi({
         body,
       }),
     }),
+
     login: builder.mutation({
       query: (body) => ({
         url: "authentication",
@@ -46,4 +89,4 @@ export const tasksApiSlice = createApi({
 // reducer
 export const tasksApiSliceReducer = tasksApiSlice.reducer;
 // hooks
-export const { useLoginMutation, useRegisterMutation } = tasksApiSlice;
+export const { useGetTasksWithPaginateQuery, useLoginMutation, useRegisterMutation } = tasksApiSlice;

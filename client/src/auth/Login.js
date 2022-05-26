@@ -3,7 +3,6 @@ import {
   Avatar,
   Button,
   Container,
-  FormControl,
   TextField,
   Typography,
 } from "@mui/material";
@@ -37,7 +36,7 @@ export const Login = () => {
       newErrors.password = "Password is required";
     }
 
-    setErrors(newErrors);
+    setErrors({...newErrors});
     
     if (Object.values(newErrors).length > 0) {
       return;
@@ -57,9 +56,8 @@ export const Login = () => {
       );
       navigate("/", { replace: true });
     } catch (err) {
-      newErrors.login = "Login error";
-      setErrors(newErrors);      
-      return
+      newErrors.login = "Helytelen belépési adatok";
+      setErrors({...newErrors});      
     }
   };
 
@@ -75,7 +73,6 @@ export const Login = () => {
       <Container
         maxWidth="xs"
         sx={{
-          marginTop: 5,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",

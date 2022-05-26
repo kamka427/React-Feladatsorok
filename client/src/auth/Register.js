@@ -3,16 +3,13 @@ import {
   Avatar,
   Button,
   Container,
-  FormControl,
   TextField,
   Typography,
 } from "@mui/material";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useLoginMutation, useRegisterMutation } from "../state/tasksApiSlice";
-import { login } from "../state/authSlice";
+import {  useRegisterMutation } from "../state/tasksApiSlice";
 
 export const Register = () => {
   const [data, setData] = useState({
@@ -40,7 +37,7 @@ export const Register = () => {
       newErrors.password = "Password is required";
     }
 
-    setErrors(newErrors);
+    setErrors({...newErrors});      
 
     if (Object.values(newErrors).length > 0) {
       return;
@@ -54,9 +51,8 @@ export const Register = () => {
       }).unwrap();
       navigate("/bejelentkezes", { replace: true });
     } catch (err) {
-      newErrors.register = "Registration error";
-      setErrors(newErrors);
-      return
+      newErrors.register = "Regisztrációs hiba";
+      setErrors({...newErrors});      
     }
   };
 
@@ -72,7 +68,6 @@ export const Register = () => {
       <Container
         maxWidth="xs"
         sx={{
-          marginTop: 5,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",

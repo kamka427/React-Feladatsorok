@@ -1,9 +1,9 @@
 import {
   Alert,
   Avatar,
-  Box,
   Button,
   Container,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -67,15 +67,12 @@ export const Register = () => {
   return (
     <>
       <Container>
-        <Box
-          maxWidth="xs"
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Stack maxWidth="xs" alignItems="center" gap={2}>
+          <Avatar
+            sx={{
+              bgcolor: "secondary.main",
+            }}
+          >
             <VpnKeyIcon />
           </Avatar>
 
@@ -123,7 +120,7 @@ export const Register = () => {
               fullWidth
             ></TextField>
 
-            <Button type="submit" sx={{ mt: 3, mb: 2 }} fullWidth>
+            <Button type="submit" sx={{ marginY: 2 }} fullWidth>
               Regisztráció
             </Button>
 
@@ -131,7 +128,7 @@ export const Register = () => {
               <Alert severity="error">{errors.register}</Alert>
             )}
           </form>
-        </Box>
+        </Stack>
       </Container>
     </>
   );

@@ -2,7 +2,6 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Box,
   Button,
   Card,
   Container,
@@ -93,9 +92,9 @@ export const Tasklists = () => {
 
   const tasklists = data.data.map((tasklist) => (
     <Card key={tasklist.id}>
-      <Box sx={{ display: "flex" }}>
+      <Stack direction="row">
         <Accordion
-        TransitionProps={{ unmountOnExit: true }}
+          TransitionProps={{ unmountOnExit: true }}
           variant="outlined"
           expanded={expanded === tasklist.id}
           onChange={handlePanelChange(tasklist.id)}
@@ -128,7 +127,7 @@ export const Tasklists = () => {
           </AccordionDetails>
         </Accordion>
         <Button color="primary">Szerkeszt</Button>
-      </Box>
+      </Stack>
     </Card>
   ));
 
@@ -137,45 +136,33 @@ export const Tasklists = () => {
       <Container>
         <Stack marginTop={2} gap={2}>
           <Typography variant="h5">Feladatsoraim</Typography>
-          <Box sx={{ display: "flex" }}>
-            <Box
-              sx={{
-                flex: 1,
-              }}
+          <Stack direction="row">
+            <Stack
+              flex={1}
+              spacing={4}
+              direction="row"
+              alignItems="center"
+              divider={<Divider orientation="vertical" flexItem />}
+              marginLeft={2}
             >
-              <Stack
-                spacing={4}
-                direction="row"
-                alignItems="center"
-                divider={<Divider orientation="vertical" flexItem />}
-                marginLeft={2}
-              >
-                <Typography variant="overline">Cím</Typography>
-                <Typography variant="overline">Státusz</Typography>
-                <Typography variant="overline">Leírás</Typography>
-                <Typography variant="overline">Létrehozás</Typography>
-                <Typography variant="overline">Utolsó módosítás</Typography>
-              </Stack>
-            </Box>
+              <Typography variant="overline">Cím</Typography>
+              <Typography variant="overline">Státusz</Typography>
+              <Typography variant="overline">Leírás</Typography>
+              <Typography variant="overline">Létrehozás</Typography>
+              <Typography variant="overline">Utolsó módosítás</Typography>
+            </Stack>
             <Button color="primary" variant="outlined">
               Új feladatsor
             </Button>
-          </Box>
+          </Stack>
           <Stack gap={2}>{tasklists}</Stack>
         </Stack>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: 3,
-          }}
-        >
+        <Stack alignItems="center" marginTop={3}>
           <Pagination
             count={calculateLastPage(data)}
             onChange={handlePageChange}
           />
-        </Box>
+        </Stack>
       </Container>
     </>
   );

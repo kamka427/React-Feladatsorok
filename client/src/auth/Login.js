@@ -1,20 +1,18 @@
 import {
   Alert,
   Avatar,
-  Box,
   Button,
   Container,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import {  useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../state/tasksApiSlice";
 import { login } from "../state/authSlice";
-
-
 
 export const Login = () => {
   const [data, setData] = useState({
@@ -26,10 +24,7 @@ export const Login = () => {
   const [authLogin] = useLoginMutation();
   const navigate = useNavigate();
 
-
-  
   const handleSubmit = async (e) => {
-
     e.preventDefault();
 
     const { username, password } = data;
@@ -47,7 +42,7 @@ export const Login = () => {
     if (Object.values(newErrors).length > 0) {
       return;
     }
-    
+
     try {
       const result = await authLogin({
         strategy: "local",
@@ -77,15 +72,12 @@ export const Login = () => {
   return (
     <>
       <Container>
-        <Box
-          maxWidth="xs"
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Stack maxWidth="xs" alignItems="center" gap={2}>
+          <Avatar
+            sx={{
+              bgcolor: "secondary.main",
+            }}
+          >
             <LockOutlinedIcon />
           </Avatar>
 
@@ -105,7 +97,7 @@ export const Login = () => {
               onChange={handleChange}
               autoFocus
               fullWidth
-            ></TextField>
+            />
             <TextField
               margin="normal"
               id="password"
@@ -119,14 +111,13 @@ export const Login = () => {
               value={data.password}
               onChange={handleChange}
               fullWidth
-            ></TextField>
-
-            <Button type="submit" sx={{ mt: 3, mb: 2 }} fullWidth>
+            />
+            <Button type="submit" sx={{ marginY: 2 }} fullWidth>
               Bejelentkezés
             </Button>
             {errors.login && <Alert severity="error">{errors.login}</Alert>}
           </form>
-        </Box>
+        </Stack>
       </Container>
     </>
   );

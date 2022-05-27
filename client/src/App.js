@@ -9,6 +9,7 @@ import { Tasks } from "./site/Tasks";
 import { Tasklists } from "./site/Tasklists";
 import { RequireAuth } from "./auth/RequireAuth";
 import { Profile } from "./site/Profile";
+import { Modify } from "./site/Modify";
 
 const darkTheme = createTheme({
   palette: {
@@ -44,7 +45,12 @@ function App() {
               path="/feladatsoraim"
               element={<RequireAuth component={<Tasklists />} />}
             />
-             <Route
+            <Route
+              path="/szerkesztes"
+              element={<RequireAuth component={<Modify />} />}
+            />
+
+            <Route
               path="/profil"
               element={<RequireAuth component={<Profile />} />}
             />

@@ -15,7 +15,6 @@ import {
 import { useGetTasksWithPaginateQuery } from "../state/tasksApiSlice";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState } from "react";
-import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
 import { selectLoggedInUser } from "../state/authSlice";
 import { usePagination } from "../navigation/usePagination";
@@ -36,7 +35,7 @@ export const Tasks = () => {
   const tasks = data.data.map((task) => (
     <Grid item xs={6} key={task.id}>
       <Card>
-        <Box sx={{ display: "flex" }}>
+        <Stack direction="row">
           <Accordion
             TransitionProps={{ unmountOnExit: true }}
             variant="outlined"
@@ -60,36 +59,31 @@ export const Tasks = () => {
               </Stack>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography variant="body2" color="text.secondary">Feladatleírás: {task.description}</Typography>
+              <Typography variant="body2" color="text.secondary">
+                Feladatleírás: {task.description}
+              </Typography>
             </AccordionDetails>
           </Accordion>
           {user && <Button color="primary">Kiválasztás</Button>}
-        </Box>
+        </Stack>
       </Card>
     </Grid>
   ));
 
   return (
     <Container>
-      <Box marginTop={2}>
+      <Stack marginTop={2}>
         <Typography variant="h5">Feladatbank</Typography>
         <Grid container spacing={2} marginY={1}>
           {tasks}
         </Grid>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: 3,
-          }}
-        >
+        <Stack alignItems="center" marginTop={3}>
           <Pagination
             count={calculateLastPage(data)}
             onChange={handlePageChange}
           />
-        </Box>
-      </Box>
+        </Stack>
+      </Stack>
     </Container>
   );
 };

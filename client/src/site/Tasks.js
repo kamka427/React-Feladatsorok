@@ -3,9 +3,12 @@ import {
   AccordionDetails,
   AccordionSummary,
   Button,
+  Card,
   Container,
   Grid,
   LinearProgress,
+  Pagination,
+  Stack,
   Typography,
 } from "@mui/material";
 import { useGetTasksWithPaginateQuery } from "../state/tasksApiSlice";
@@ -14,83 +17,71 @@ import { useState } from "react";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
 import { selectLoggedInUser } from "../state/authSlice";
+import { usePagination } from "../navigation/usePagination";
 
 export const Tasks = () => {
   const user = useSelector(selectLoggedInUser);
   const [expanded, setExpanded] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0);
+  const { currentPage, handlePageChange, calculateLastPage } = usePagination();
+
   const { isLoading, data } = useGetTasksWithPaginateQuery(currentPage);
+
   if (isLoading) return <LinearProgress />;
-  const maxPage = data.total / data.limit;
 
-  const handlePrevPage = () => {
-    currentPage > 0 && setCurrentPage(currentPage - 1);
-  };
-  const handleNextPage = () => {
-    currentPage + 1 < maxPage && setCurrentPage(currentPage + 1);
-  };
-
-  const handleChange = (panel) => (event, isExpanded) => {
+  const handlePanelChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
   const tasks = data.data.map((task) => (
-    <Grid
-      item
-      xs={6}
-      key={task.id}
-      sx={{
-        display: "flex",
-        gap: 2,
-        alignItems: "center",
-      }}
-    >
-      <Accordion
-        sx={{
-          flex: 1,
-        }}
-        expanded={expanded === task.id}
-        onChange={handleChange(task.id)}
-      >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography sx={{ width: "33%" }}>{task.title}</Typography>
-          <Typography sx={{ color: "text.secondary" }}>
-            {task.description.slice(0, 8)}...
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>{task.description}</Typography>
-        </AccordionDetails>
-      </Accordion>
-      {user && (
-        <Button variant="contained" color="primary">
-          Kiválasztás
-        </Button>
-      )}
+    <Grid item xs={6} key={task.id}>
+      <Card>
+        <Box sx={{ display: "flex" }}>
+          <Accordion
+            variant="outlined"
+            expanded={expanded === task.id}
+            onChange={handlePanelChange(task.id)}
+            sx={{
+              flex: 1,
+            }}
+          >
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Stack direction="row" gap={4} alignItems="center">
+                <Typography variant="h6">{task.title}</Typography>
+                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                  {task.description.slice(0, 8)}...
+                </Typography>
+              </Stack>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography variant="body1"> {task.description}</Typography>
+            </AccordionDetails>
+          </Accordion>
+          {user && <Button color="primary">Kiválasztás</Button>}
+        </Box>
+      </Card>
     </Grid>
   ));
 
   return (
-    <Container
-    >
-      <Typography variant="h5">Feladatbank</Typography>
-      <Grid container spacing={2} marginY={1}>
-        {tasks}
-      </Grid>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Button onClick={handlePrevPage} color="secondary">
-          Hátra
-        </Button>
-        <Typography>
-          {currentPage + 1}/{maxPage}. oldal
-        </Typography>
-        <Button onClick={handleNextPage}>Előre</Button>
+    <Container>
+      <Box marginTop={2}>
+        <Typography variant="h5">Feladatbank</Typography>
+        <Grid container spacing={2} marginY={1}>
+          {tasks}
+        </Grid>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 3,
+          }}
+        >
+          <Pagination
+            count={calculateLastPage(data)}
+            onChange={handlePageChange}
+          />
+        </Box>
       </Box>
     </Container>
   );

@@ -1,13 +1,13 @@
-import { Container, Typography } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 export const Home = () => {
   return (
     <>
-      <Container
-      >
-        <Typography variant="h5">
-          Főoldal
+      <Container>
+        <Box marginTop={2}>
+        <Typography variant="h5">Főoldal</Typography>
+        <Typography variant="h6">
+          A feladat
         </Typography>
-        <Typography variant="h6"> A feladat </Typography>
         <Typography variant="body1">
           A beadandóban olyan webes alkalmazást kell írnod, amelyben egy
           tanárnak lehetősége van egy feladatsort összeállítani, pl. óra vagy
@@ -21,6 +21,7 @@ export const Home = () => {
           javasolt. A feladatban adott a szerveroldali REST API, leírását
           lentebb olvashatjátok, ehhez kell igazodnia a kliensnek.
         </Typography>
+        </Box>
       </Container>
     </>
   );

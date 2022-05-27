@@ -106,6 +106,7 @@ export const tasksApiSliceReducer = tasksApiSlice.reducer;
 export const {
   useGetTasksWithPaginateQuery,
   useGetTasklistsQuery,
+  useGetTaskslistsWithPaginateQuery,
   useLoginMutation,
   useRegisterMutation,
 } = tasksApiSlice;

@@ -1,17 +1,20 @@
 import {
   Alert,
   Avatar,
+  Box,
   Button,
   Container,
   TextField,
   Typography,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { useState } from "react";
+import {  useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../state/tasksApiSlice";
 import { login } from "../state/authSlice";
+
+
 
 export const Login = () => {
   const [data, setData] = useState({
@@ -23,7 +26,10 @@ export const Login = () => {
   const [authLogin] = useLoginMutation();
   const navigate = useNavigate();
 
+
+  
   const handleSubmit = async (e) => {
+
     e.preventDefault();
 
     const { username, password } = data;
@@ -36,18 +42,18 @@ export const Login = () => {
       newErrors.password = "Password is required";
     }
 
-    setErrors({...newErrors});
-    
+    setErrors({ ...newErrors });
+
     if (Object.values(newErrors).length > 0) {
       return;
     }
-
+    
     try {
       const result = await authLogin({
         strategy: "local",
         email: username,
         password: password,
-      }).unwrap();      
+      }).unwrap();
       dispatch(
         login({
           user: result.user,
@@ -57,7 +63,7 @@ export const Login = () => {
       navigate("/", { replace: true });
     } catch (err) {
       newErrors.login = "Helytelen belépési adatok";
-      setErrors({...newErrors});      
+      setErrors({ ...newErrors });
     }
   };
 
@@ -70,58 +76,57 @@ export const Login = () => {
 
   return (
     <>
-      <Container
-        maxWidth="xs"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
-        </Avatar>
+      <Container>
+        <Box
+          maxWidth="xs"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
 
-        <Typography variant="h5">Bejelentkezés</Typography>
-        <form onSubmit={handleSubmit}>
-          <TextField
-            margin="normal"
-            id="email"
-            name="username"
-            label="Email cím"
-            type="email"
-            variant="standard"
-            autoComplete="email"
-            error={errors.username !== undefined}
-            helperText={errors.username}
-            value={data.username}
-            onChange={handleChange}
-            autoFocus
-            fullWidth
-          ></TextField>
-          <TextField
-            margin="normal"
-            id="password"
-            name="password"
-            label="Jelszó"
-            type="password"
-            variant="standard"
-            autoComplete="current-password"
-            error={errors.password !== undefined}
-            helperText={errors.password}
-            value={data.password}
-            onChange={handleChange}
-            fullWidth
-          ></TextField>
+          <Typography variant="h5">Bejelentkezés</Typography>
+          <form onSubmit={handleSubmit}>
+            <TextField
+              margin="normal"
+              id="email"
+              name="username"
+              label="Email cím"
+              type="email"
+              variant="standard"
+              autoComplete="email"
+              error={errors.username !== undefined}
+              helperText={errors.username}
+              value={data.username}
+              onChange={handleChange}
+              autoFocus
+              fullWidth
+            ></TextField>
+            <TextField
+              margin="normal"
+              id="password"
+              name="password"
+              label="Jelszó"
+              type="password"
+              variant="standard"
+              autoComplete="current-password"
+              error={errors.password !== undefined}
+              helperText={errors.password}
+              value={data.password}
+              onChange={handleChange}
+              fullWidth
+            ></TextField>
 
-          <Button type="submit" sx={{ mt: 3, mb: 2 }} fullWidth>
-            Bejelentkezés
-          </Button>
-          {errors.login && 
-          <Alert severity="error">{errors.login}</Alert>
-          }
-
-        </form>
+            <Button type="submit" sx={{ mt: 3, mb: 2 }} fullWidth>
+              Bejelentkezés
+            </Button>
+            {errors.login && <Alert severity="error">{errors.login}</Alert>}
+          </form>
+        </Box>
       </Container>
     </>
   );

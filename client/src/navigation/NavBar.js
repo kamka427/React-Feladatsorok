@@ -124,7 +124,10 @@ export const NavBar = ({ isDark, setTheme }) => {
               </Button>
             )}
             {user && (
-              <Button component={RouterLink} to="/profil" color="inherit">
+              <Button component={RouterLink} to="/profil" color="inherit"
+              onClick={
+                resetTab
+              }>
                 <AccountCircleIcon />
               </Button>
             )}

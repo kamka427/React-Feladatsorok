@@ -3,9 +3,7 @@ import {
   Button,
   Card,
   CircularProgress,
-  LinearProgress,
   Stack,
-  TextField,
   Typography,
 } from "@mui/material";
 import { Box, Container } from "@mui/system";
@@ -19,7 +17,6 @@ export const Profile = () => {
   const user = useSelector(selectLoggedInUser);
   const dispatch = useDispatch();
   const { isLoading, data } = useGetTasklistsQuery();
-
   return (
     <Container>
       <Stack marginTop={2} gap={2}>

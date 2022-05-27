@@ -1,5 +1,5 @@
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import { createContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { NavBar } from "./navigation/NavBar";
 import { Login } from "./auth/Login";
 import { BrowserRouter, Route, Routes } from "react-router-dom";

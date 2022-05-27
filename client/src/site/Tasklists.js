@@ -12,7 +12,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { useGetTaskslistsWithPaginateQuery } from "../state/tasksApiSlice";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { usePagination } from "../navigation/usePagination";
@@ -29,6 +29,68 @@ export const Tasklists = () => {
     return <LinearProgress />;
   }
 
+  const summary = (tasklist) => (
+    <Stack
+      direction="row"
+      gap={4}
+      divider={<Divider orientation="vertical" flexItem />}
+      alignItems="center"
+    >
+      <Typography variant="h6">{tasklist.title}</Typography>
+      <Typography variant="body2" color="text.secondary">
+        {tasklist.status}
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        {tasklist.description}
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        L: {tasklist.createdAt}
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        M: {tasklist.updatedAt}
+      </Typography>
+    </Stack>
+  );
+
+  const details = (tasklist) => (
+    <Stack>
+      <Typography variant="h6">{tasklist.title}</Typography>
+      <Typography variant="body2" color="text.secondary">
+        Státusz: {tasklist.status}
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        Leírás: {tasklist.description}
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        Létrehozva: {tasklist.createdAt}
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        Utoljára módosítva: {tasklist.updatedAt}
+      </Typography>
+      <Typography variant="body2" color="text.secondary"></Typography>
+      <Typography variant="body2" color="text.secondary">
+        Pontok összesítve:
+        {tasklist.tasks.reduce((acc, task) => acc + task.points, 0)}
+      </Typography>
+    </Stack>
+  );
+
+  const tasks = (tasklist) =>
+    tasklist.tasks.map((task) => (
+      <Stack key={task.id}>
+        <Typography variant="body1">{task.title}</Typography>
+        <Typography variant="body2" color="text.secondary">
+          Feladatleírás: {task.description}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Megjegyzés: {task.notes}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Pontszám: {task.points}
+        </Typography>
+      </Stack>
+    ));
+
   const tasklists = data.data.map((tasklist) => (
     <Card key={tasklist.id}>
       <Box sx={{ display: "flex" }}>
@@ -41,29 +103,22 @@ export const Tasklists = () => {
           }}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Stack
-              direction="row"
-              gap={4}
-              divider={<Divider orientation="vertical" flexItem />}
-              alignItems="center"
-            >
-              <Typography variant="h6">{tasklist.title}</Typography>
-              <Typography variant="body2" color="text.secondary">
-                {tasklist.status}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {tasklist.description}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                K: {tasklist.createdAt}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                M: {tasklist.updatedAt}
-              </Typography>
-            </Stack>
+            {summary(tasklist)}
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>{tasklist.description}</Typography>
+            <Stack spacing={4}>
+              {details(tasklist)}
+              <Box>
+                <Typography variant="h6">Feladatok</Typography>
+                <Stack
+                  direction="row"
+                  spacing={4}
+                  divider={<Divider orientation="vertical" flexItem />}
+                >
+                  {tasks(tasklist)}
+                </Stack>
+              </Box>
+            </Stack>
           </AccordionDetails>
         </Accordion>
         <Button color="primary">Szerkeszt</Button>
@@ -89,11 +144,11 @@ export const Tasklists = () => {
                 divider={<Divider orientation="vertical" flexItem />}
                 marginLeft={2}
               >
-                <Typography>Cím</Typography>
-                <Typography>Státusz</Typography>
-                <Typography>Leírás</Typography>
-                <Typography>Létrehozás</Typography>
-                <Typography>Utolsó módosítás</Typography>
+                <Typography variant="overline">Cím</Typography>
+                <Typography variant="overline">Státusz</Typography>
+                <Typography variant="overline">Leírás</Typography>
+                <Typography variant="overline">Létrehozás</Typography>
+                <Typography variant="overline">Utolsó módosítás</Typography>
               </Stack>
             </Box>
             <Button color="primary" variant="outlined">

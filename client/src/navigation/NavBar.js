@@ -3,7 +3,7 @@ import { Link as RouterLink } from "react-router-dom";
 
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectLoggedInUser } from "../state/authSlice";
@@ -14,13 +14,17 @@ export const NavBar = ({ isDark, setTheme }) => {
 
   const dispatch = useDispatch();
 
-  const [activeTab, setActiveTab] = useState(
-    ["/feladatbank", "/feladatsoraim", "/szerkesztes"].includes(
-      window.location.pathname
-    )
-      ? window.location.pathname
-      : false
-  );
+  const [activeTab, setActiveTab] = useState(false);
+
+  useEffect(() => {
+    setActiveTab(
+      ["/feladatbank", "/feladatsoraim", "/szerkesztes"].includes(
+        window.location.pathname
+      )
+        ? window.location.pathname
+        : false
+    );
+  }, []);
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -85,7 +89,7 @@ export const NavBar = ({ isDark, setTheme }) => {
                 label="Regisztráció"
                 component={RouterLink}
                 to="/regisztracio"
-               color="secondary"
+                color="secondary"
                 onClick={resetTab}
               >
                 Regisztráció

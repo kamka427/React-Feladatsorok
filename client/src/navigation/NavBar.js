@@ -15,7 +15,9 @@ export const NavBar = ({ isDark, setTheme }) => {
 
   const dispatch = useDispatch();
 
-  const [activeTab, setActiveTab] = useState(false);
+  const [activeTab, setActiveTab] = useState(
+    ["/feladatbank", "/feladatsoraim", "/szerkesztett"].includes(window.location.pathname) ? window.location.pathname : false
+  );
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);

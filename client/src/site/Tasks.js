@@ -5,6 +5,7 @@ import {
   Button,
   Card,
   Container,
+  Divider,
   Grid,
   LinearProgress,
   Pagination,
@@ -37,6 +38,7 @@ export const Tasks = () => {
       <Card>
         <Box sx={{ display: "flex" }}>
           <Accordion
+            TransitionProps={{ unmountOnExit: true }}
             variant="outlined"
             expanded={expanded === task.id}
             onChange={handlePanelChange(task.id)}
@@ -45,7 +47,12 @@ export const Tasks = () => {
             }}
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Stack direction="row" gap={4} alignItems="center">
+              <Stack
+                direction="row"
+                gap={4}
+                divider={<Divider orientation="vertical" flexItem />}
+                alignItems="center"
+              >
                 <Typography variant="h6">{task.title}</Typography>
                 <Typography variant="body2" color="text.secondary">
                   {task.description.slice(0, 8)}...
@@ -53,7 +60,7 @@ export const Tasks = () => {
               </Stack>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography variant="body1"> {task.description}</Typography>
+              <Typography variant="body2" color="text.secondary">Feladatleírás: {task.description}</Typography>
             </AccordionDetails>
           </Accordion>
           {user && <Button color="primary">Kiválasztás</Button>}

@@ -54,7 +54,7 @@ export const Tasklists = () => {
 
   const details = (tasklist) => (
     <Stack>
-      <Typography variant="h6">{tasklist.title}</Typography>
+      <Typography variant="body1">Cím: {tasklist.title}</Typography>
       <Typography variant="body2" color="text.secondary">
         Státusz: {tasklist.status}
       </Typography>
@@ -95,6 +95,7 @@ export const Tasklists = () => {
     <Card key={tasklist.id}>
       <Box sx={{ display: "flex" }}>
         <Accordion
+        TransitionProps={{ unmountOnExit: true }}
           variant="outlined"
           expanded={expanded === tasklist.id}
           onChange={handlePanelChange(tasklist.id)}
@@ -107,9 +108,14 @@ export const Tasklists = () => {
           </AccordionSummary>
           <AccordionDetails>
             <Stack spacing={4}>
-              {details(tasklist)}
-              <Box>
+              <Stack gap={1}>
+                <Typography variant="h6">Részletek</Typography>
+                <Divider />
+                {details(tasklist)}
+              </Stack>
+              <Stack gap={1}>
                 <Typography variant="h6">Feladatok</Typography>
+                <Divider />
                 <Stack
                   direction="row"
                   spacing={4}
@@ -117,7 +123,7 @@ export const Tasklists = () => {
                 >
                   {tasks(tasklist)}
                 </Stack>
-              </Box>
+              </Stack>
             </Stack>
           </AccordionDetails>
         </Accordion>

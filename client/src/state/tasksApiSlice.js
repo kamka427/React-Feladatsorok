@@ -24,47 +24,35 @@ export const tasksApiSlice = createApi({
       query: () => ({
         url: "tasks",
       }),
-      transformResponse: (response) => response.data,
     }),
 
     getTasksWithPaginate: builder.query({
       query: (page) => ({
         url: `tasks?$skip=${page * 10}&$limit=10`,
       }),
-      transformResponse: (response) => {
-        return {
-          data: response.data,
-          total: response.total,
-          limit: response.limit
-        };
-      },
     }),
 
     getTaskById: builder.query({
       query: (id) => ({
         url: `tasks/${id}`,
       }),
-      transformResponse: (response) => response.data,
     }),
     getTasklists: builder.query({
       query: () => ({
-        url: "tasks",
+        url: "tasklists",
       }),
-      transformResponse: (response) => response.data,
     }),
 
     getTaskslistsWithPaginate: builder.query({
       query: (page) => ({
-        url: `tasks?$skip=${page * 10}&$limit=10`,
+        url: `tasklists?$skip=${page * 10}&$limit=10`,
       }),
-      transformResponse: (response) => response.data,
     }),
 
     getTasklistById: builder.query({
       query: (id) => ({
-        url: `tasks/${id}`,
+        url: `tasklists/${id}`,
       }),
-      transformResponse: (response) => response.data,
     }),
 
     createTasklist: builder.mutation({

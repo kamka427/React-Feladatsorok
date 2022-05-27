@@ -8,6 +8,7 @@ import { Home } from "./site/Home";
 import { Tasks } from "./site/Tasks";
 import { Tasklists } from "./site/Tasklists";
 import { RequireAuth } from "./auth/RequireAuth";
+import { Profile } from "./site/Profile";
 
 const darkTheme = createTheme({
   palette: {
@@ -21,7 +22,6 @@ const lightTheme = createTheme({
   },
 });
 
-
 function App() {
   const [isDark, setIsDark] = useState(true);
   const toggleThemeHandler = () => {
@@ -29,32 +29,25 @@ function App() {
   };
   const theme = isDark ? darkTheme : lightTheme;
 
-
-  
-
-  
   return (
     <>
-
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <CssBaseline />
-          <NavBar isDark={isDark} setTheme={toggleThemeHandler}
-          />
+          <NavBar isDark={isDark} setTheme={toggleThemeHandler} />
           <Routes>
-            <Route path="*" element={<Home />}></Route>
-            <Route path="/regisztracio" element={<Register />}></Route>
-            <Route path="/bejelentkezes" element={<Login />}></Route>
-            <Route path="/feladatbank" element={<Tasks />}></Route>
-            <Route path="/feladatsoraim" element={
-            <RequireAuth>
-
-              <Tasklists />
-
-            </RequireAuth>
-            
-            
-            }></Route>
+            <Route path="*" element={<Home />} />
+            <Route path="/regisztracio" element={<Register />} />
+            <Route path="/bejelentkezes" element={<Login />} />
+            <Route path="/feladatbank" element={<Tasks />} />
+            <Route
+              path="/feladatsoraim"
+              element={<RequireAuth component={<Tasklists />} />}
+            />
+             <Route
+              path="/profil"
+              element={<RequireAuth component={<Profile />} />}
+            />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

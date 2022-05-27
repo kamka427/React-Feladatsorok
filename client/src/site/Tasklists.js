@@ -30,11 +30,10 @@ export const Tasklists = () => {
   }
 
   const tasklists = data.data.map((tasklist) => (
-    <Card>
+    <Card key={tasklist.id}>
       <Box sx={{ display: "flex" }}>
         <Accordion
           variant="outlined"
-          key={tasklist.id}
           expanded={expanded === tasklist.id}
           onChange={handlePanelChange(tasklist.id)}
           sx={{
@@ -49,16 +48,16 @@ export const Tasklists = () => {
               alignItems="center"
             >
               <Typography variant="h6">{tasklist.title}</Typography>
-              <Typography variant="body2" sx={{ color: "text.secondary" }}>
+              <Typography variant="body2" color="text.secondary">
                 {tasklist.status}
               </Typography>
-              <Typography variant="body2" sx={{ color: "text.secondary" }}>
+              <Typography variant="body2" color="text.secondary">
                 {tasklist.description}
               </Typography>
-              <Typography variant="body2" sx={{ color: "text.secondary" }}>
+              <Typography variant="body2" color="text.secondary">
                 K: {tasklist.createdAt}
               </Typography>
-              <Typography variant="body2" sx={{ color: "text.secondary" }}>
+              <Typography variant="body2" color="text.secondary">
                 M: {tasklist.updatedAt}
               </Typography>
             </Stack>
@@ -88,6 +87,7 @@ export const Tasklists = () => {
                 direction="row"
                 alignItems="center"
                 divider={<Divider orientation="vertical" flexItem />}
+                marginLeft={2}
               >
                 <Typography>Cím</Typography>
                 <Typography>Státusz</Typography>
@@ -96,7 +96,9 @@ export const Tasklists = () => {
                 <Typography>Utolsó módosítás</Typography>
               </Stack>
             </Box>
-            <Button color="primary" variant="outlined">Új feladatsor</Button>
+            <Button color="primary" variant="outlined">
+              Új feladatsor
+            </Button>
           </Box>
           <Stack gap={2}>{tasklists}</Stack>
         </Stack>

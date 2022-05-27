@@ -1,17 +1,9 @@
-import {
-  Button,
-  Container,
-  Divider,
-  Link,
-  Stack,
-  Tab,
-  Tabs,
-} from "@mui/material";
+import { Button, Container, Link, Stack, Tab, Tabs } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectLoggedInUser } from "../state/authSlice";
@@ -32,8 +24,6 @@ export const NavBar = ({ isDark, setTheme }) => {
   const resetTab = () => {
     setActiveTab(false);
   };
-
-  const currentRoute = window.location.pathname;
 
   return (
     <>
@@ -92,7 +82,6 @@ export const NavBar = ({ isDark, setTheme }) => {
               <>
                 <Button
                   label="Bejelentkezés"
-                  value="/bejelentkezes"
                   component={RouterLink}
                   to="/bejelentkezes"
                   sx={{
@@ -105,7 +94,6 @@ export const NavBar = ({ isDark, setTheme }) => {
 
                 <Button
                   label="Regisztráció"
-                  value="/regisztracio"
                   component={RouterLink}
                   to="/regisztracio"
                   sx={{
@@ -120,7 +108,6 @@ export const NavBar = ({ isDark, setTheme }) => {
             {user && (
               <Button
                 label="Kijelentkezés"
-                value="/kijelentkezes"
                 component={RouterLink}
                 to="/"
                 onClick={() => {

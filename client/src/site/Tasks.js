@@ -47,7 +47,7 @@ export const Tasks = () => {
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Stack direction="row" gap={4} alignItems="center">
                 <Typography variant="h6">{task.title}</Typography>
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                <Typography variant="body2" color="text.secondary">
                   {task.description.slice(0, 8)}...
                 </Typography>
               </Stack>

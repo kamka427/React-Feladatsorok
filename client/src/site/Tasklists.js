@@ -68,7 +68,7 @@ export const Tasklists = () => {
       </Typography>
       <Typography variant="body2" color="text.secondary"></Typography>
       <Typography variant="body2" color="text.secondary">
-        Pontok összesítve:
+        Pontok összesítve:{" "}
         {tasklist.tasks.reduce((acc, task) => acc + task.points, 0)}
       </Typography>
     </Stack>

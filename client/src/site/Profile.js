@@ -18,12 +18,10 @@ export const Profile = () => {
   const dispatch = useDispatch();
   const { isLoading, data } = useGetTasklistsQuery();
   return (
-    <Container>
-      <Stack marginTop={2} gap={2}>
-        <Typography variant="h5">Profil</Typography>
-        <Stack maxWidth="xs" alignItems="center">
+    <Container maxWidth="xs">
+      <Stack marginTop={3}>
           <Card variant="outlined">
-            <Stack paddingY={3} paddingX={6} gap={2} alignItems="center">
+            <Stack paddingY={3} gap={2} alignItems="center">
               <Avatar
                 sx={{
                   bgcolor: "secondary.main",
@@ -31,7 +29,8 @@ export const Profile = () => {
               >
                 <AccountCircleIcon />
               </Avatar>
-              <Stack gap={2}>
+              <Typography variant="h5">Profil</Typography>
+              <Stack >
                 <Typography variant="h6">Név: {user.fullname}</Typography>
                 <Typography variant="body2" color="text.secondary">
                   Email: {user.email}
@@ -43,6 +42,7 @@ export const Profile = () => {
                     "Feladatsorok száma: " + data.total
                   )}
                 </Typography>
+              </Stack>
                 <Button
                   label="Kijelentkezés"
                   component={RouterLink}
@@ -50,17 +50,14 @@ export const Profile = () => {
                   onClick={() => {
                     dispatch(logout());
                   }}
-                  sx={{
-                    color: "error.main",
-                  }}
+                  color="error"
+                  variant="outlined"
                 >
                   Kijelentkezés
                 </Button>
-              </Stack>
             </Stack>
           </Card>
         </Stack>
-      </Stack>
     </Container>
   );
 };

@@ -2,9 +2,9 @@ import {
   Alert,
   Avatar,
   Button,
+  Card,
   Container,
   Stack,
-  TableContainer,
   TextField,
   Typography,
 } from "@mui/material";
@@ -71,55 +71,51 @@ export const Login = () => {
   };
 
   return (
-    <Container>
-      <Stack gap={2}>
-        <Stack gap={2} alignItems="center">
-          <Avatar
-            sx={{
-              bgcolor: "secondary.main",
-            }}
-          >
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography variant="h5">Bejelentkezés</Typography>
-        </Stack>
-        <form onSubmit={handleSubmit}>
-          <Container maxWidth="sm">
-            <Stack gap={2}>
+    <Container maxWidth="sm">
+      <Stack marginTop={3}>
+        <Card variant="outlined">
+          <Stack gap={2} alignItems="center" paddingTop={3}>
+            <Avatar
+              sx={{
+                bgcolor: "secondary.main",
+              }}
+            >
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography variant="h5">Bejelentkezés</Typography>
+          </Stack>
+          <form onSubmit={handleSubmit}>
+            <Stack gap={3} paddingY={3} paddingX={3}>
               <TextField
                 id="email"
                 name="username"
                 label="Email cím"
                 type="email"
-                variant="standard"
                 autoComplete="email"
                 error={errors.username !== undefined}
                 helperText={errors.username}
                 value={data.username}
                 onChange={handleChange}
                 autoFocus
-                fullWidth
               />
               <TextField
                 id="password"
                 name="password"
                 label="Jelszó"
                 type="password"
-                variant="standard"
                 autoComplete="current-password"
                 error={errors.password !== undefined}
                 helperText={errors.password}
                 value={data.password}
                 onChange={handleChange}
-                fullWidth
               />
-              <Button type="submit" sx={{ marginY: 2 }} fullWidth>
+              <Button type="submit" variant="outlined" fullWidth>
                 Bejelentkezés
               </Button>
-              {errors.login && <Alert severity="error">{errors.login}</Alert>}
+              {errors.login && <Alert variant="outlined" severity="error">{errors.login}</Alert>}
             </Stack>
-          </Container>
-        </form>
+          </form>
+        </Card>
       </Stack>
     </Container>
   );

@@ -76,9 +76,6 @@ export const NavBar = ({ isDark, setTheme }) => {
                 label="Bejelentkezés"
                 component={RouterLink}
                 to="/bejelentkezes"
-                sx={{
-                  color: "primary.main",
-                }}
                 onClick={resetTab}
               >
                 Bejelentkezés
@@ -88,9 +85,7 @@ export const NavBar = ({ isDark, setTheme }) => {
                 label="Regisztráció"
                 component={RouterLink}
                 to="/regisztracio"
-                sx={{
-                  color: "secondary.main",
-                }}
+               color="secondary"
                 onClick={resetTab}
               >
                 Regisztráció
@@ -106,9 +101,7 @@ export const NavBar = ({ isDark, setTheme }) => {
                 dispatch(logout());
                 resetTab();
               }}
-              sx={{
-                color: "error.main",
-              }}
+              color="error"
             >
               Kijelentkezés
             </Button>

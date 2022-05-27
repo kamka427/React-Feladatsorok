@@ -65,9 +65,9 @@ export const Register = () => {
   };
 
   return (
-    <>
-      <Container>
-        <Stack maxWidth="xs" alignItems="center" gap={2}>
+    <Container>
+      <Stack gap={2}>
+        <Stack gap={2} alignItems="center">
           <Avatar
             sx={{
               bgcolor: "secondary.main",
@@ -75,61 +75,61 @@ export const Register = () => {
           >
             <VpnKeyIcon />
           </Avatar>
-
           <Typography variant="h5">Regisztráció</Typography>
-          <form onSubmit={handleSubmit}>
-            <TextField
-              margin="normal"
-              id="name"
-              name="name"
-              label="Teljes név"
-              variant="standard"
-              error={errors.name !== undefined}
-              helperText={errors.name}
-              value={data.name}
-              onChange={handleChange}
-              autoFocus
-              fullWidth
-            ></TextField>
-            <TextField
-              margin="normal"
-              id="email"
-              name="username"
-              label="Email cím"
-              type="email"
-              variant="standard"
-              autoComplete="email"
-              error={errors.username !== undefined}
-              helperText={errors.username}
-              value={data.username}
-              onChange={handleChange}
-              fullWidth
-            ></TextField>
-            <TextField
-              margin="normal"
-              id="password"
-              name="password"
-              label="Jelszó"
-              type="password"
-              variant="standard"
-              autoComplete="current-password"
-              error={errors.password !== undefined}
-              helperText={errors.password}
-              value={data.password}
-              onChange={handleChange}
-              fullWidth
-            ></TextField>
-
-            <Button type="submit" sx={{ marginY: 2 }} fullWidth>
-              Regisztráció
-            </Button>
-
-            {errors.register && (
-              <Alert severity="error">{errors.register}</Alert>
-            )}
-          </form>
         </Stack>
-      </Container>
-    </>
+        <form onSubmit={handleSubmit}>
+          <Container maxWidth="sm">
+            <Stack gap={2}>
+              <TextField
+                id="name"
+                name="name"
+                label="Teljes név"
+                variant="standard"
+                error={errors.name !== undefined}
+                helperText={errors.name}
+                value={data.name}
+                onChange={handleChange}
+                autoFocus
+                fullWidth
+              />
+              <TextField
+                id="email"
+                name="username"
+                label="Email cím"
+                type="email"
+                variant="standard"
+                autoComplete="email"
+                error={errors.username !== undefined}
+                helperText={errors.username}
+                value={data.username}
+                onChange={handleChange}
+                fullWidth
+              />
+              <TextField
+                id="password"
+                name="password"
+                label="Jelszó"
+                type="password"
+                variant="standard"
+                autoComplete="current-password"
+                error={errors.password !== undefined}
+                helperText={errors.password}
+                value={data.password}
+                onChange={handleChange}
+                fullWidth
+              />
+
+              <Button type="submit" sx={{ marginY: 2 }} fullWidth>
+                Regisztráció
+              </Button>
+
+              {errors.register && (
+                <Alert severity="error">{errors.register}</Alert>
+              )}
+            </Stack>
+          </Container>
+        </form>
+      </Stack>
+    </Container>
   );
 };

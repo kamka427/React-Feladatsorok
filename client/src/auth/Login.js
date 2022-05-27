@@ -4,6 +4,7 @@ import {
   Button,
   Container,
   Stack,
+  TableContainer,
   TextField,
   Typography,
 } from "@mui/material";
@@ -70,9 +71,9 @@ export const Login = () => {
   };
 
   return (
-    <>
-      <Container>
-        <Stack maxWidth="xs" alignItems="center" gap={2}>
+    <Container>
+      <Stack gap={2}>
+        <Stack gap={2} alignItems="center">
           <Avatar
             sx={{
               bgcolor: "secondary.main",
@@ -80,45 +81,46 @@ export const Login = () => {
           >
             <LockOutlinedIcon />
           </Avatar>
-
           <Typography variant="h5">Bejelentkezés</Typography>
-          <form onSubmit={handleSubmit}>
-            <TextField
-              margin="normal"
-              id="email"
-              name="username"
-              label="Email cím"
-              type="email"
-              variant="standard"
-              autoComplete="email"
-              error={errors.username !== undefined}
-              helperText={errors.username}
-              value={data.username}
-              onChange={handleChange}
-              autoFocus
-              fullWidth
-            />
-            <TextField
-              margin="normal"
-              id="password"
-              name="password"
-              label="Jelszó"
-              type="password"
-              variant="standard"
-              autoComplete="current-password"
-              error={errors.password !== undefined}
-              helperText={errors.password}
-              value={data.password}
-              onChange={handleChange}
-              fullWidth
-            />
-            <Button type="submit" sx={{ marginY: 2 }} fullWidth>
-              Bejelentkezés
-            </Button>
-            {errors.login && <Alert severity="error">{errors.login}</Alert>}
-          </form>
         </Stack>
-      </Container>
-    </>
+        <form onSubmit={handleSubmit}>
+          <Container maxWidth="sm">
+            <Stack gap={2}>
+              <TextField
+                id="email"
+                name="username"
+                label="Email cím"
+                type="email"
+                variant="standard"
+                autoComplete="email"
+                error={errors.username !== undefined}
+                helperText={errors.username}
+                value={data.username}
+                onChange={handleChange}
+                autoFocus
+                fullWidth
+              />
+              <TextField
+                id="password"
+                name="password"
+                label="Jelszó"
+                type="password"
+                variant="standard"
+                autoComplete="current-password"
+                error={errors.password !== undefined}
+                helperText={errors.password}
+                value={data.password}
+                onChange={handleChange}
+                fullWidth
+              />
+              <Button type="submit" sx={{ marginY: 2 }} fullWidth>
+                Bejelentkezés
+              </Button>
+              {errors.login && <Alert severity="error">{errors.login}</Alert>}
+            </Stack>
+          </Container>
+        </form>
+      </Stack>
+    </Container>
   );
 };

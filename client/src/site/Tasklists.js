@@ -11,10 +11,18 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { useGetTaskslistsWithPaginateQuery } from "../state/tasksApiSlice";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { usePagination } from "../navigation/usePagination";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createTasklist,
+  deleteTasklist,
+  selectTasklist,
+  setTasklist,
+} from "../state/tasklistSlice";
+import { useNavigate } from "react-router-dom";
 
 export const Tasklists = () => {
   const { currentPage, handlePageChange, calculateLastPage } = usePagination();
@@ -23,6 +31,11 @@ export const Tasklists = () => {
   const handlePanelChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+
+  const storedTasklist = useSelector(selectTasklist);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   if (isLoading) {
     return <LinearProgress />;
@@ -126,7 +139,27 @@ export const Tasklists = () => {
             </Stack>
           </AccordionDetails>
         </Accordion>
-        <Button color="primary">Szerkeszt</Button>
+        {(!storedTasklist ||
+          (storedTasklist && tasklist.id !== storedTasklist.id)) && (
+          <Button
+            color="primary"
+            onClick={() => {
+              navigate("/szerkesztes", { replace: true });
+
+              dispatch(setTasklist(tasklist));
+            }}
+          >
+            Szerkeszt
+          </Button>
+        )}
+        {storedTasklist && tasklist.id === storedTasklist.id && (
+          <Button
+            color="secondary"
+            onClick={() => dispatch(deleteTasklist(tasklist))}
+          >
+            Szerkesztés alatt
+          </Button>
+        )}
       </Stack>
     </Card>
   ));
@@ -151,7 +184,11 @@ export const Tasklists = () => {
               <Typography variant="overline">Létrehozás</Typography>
               <Typography variant="overline">Utolsó módosítás</Typography>
             </Stack>
-            <Button color="primary" variant="outlined">
+            <Button
+              color="primary"
+              variant="outlined"
+              onClick={() => dispatch(createTasklist())}
+            >
               Új feladatsor
             </Button>
           </Stack>

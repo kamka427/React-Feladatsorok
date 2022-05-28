@@ -145,7 +145,6 @@ export const Tasklists = () => {
             color="primary"
             onClick={() => {
               navigate("/szerkesztes", { replace: true });
-
               dispatch(setTasklist(tasklist));
             }}
           >
@@ -187,7 +186,10 @@ export const Tasklists = () => {
             <Button
               color="primary"
               variant="outlined"
-              onClick={() => dispatch(createTasklist())}
+              onClick={() => {
+                navigate("/szerkesztes", { replace: true });
+                dispatch(createTasklist());
+              }}
             >
               Új feladatsor
             </Button>

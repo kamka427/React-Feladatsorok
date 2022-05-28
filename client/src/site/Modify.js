@@ -3,6 +3,7 @@ import {
   FormControl,
   Grid,
   InputLabel,
+  LinearProgress,
   MenuItem,
   Select,
   Stack,
@@ -18,6 +19,7 @@ import {
 } from "../state/tasklistSlice";
 import { useNavigate } from "react-router-dom";
 import { Fragment, useState } from "react";
+import { useGetTasklistByIdQuery } from "../state/tasksApiSlice";
 
 export const Modify = () => {
   const dispatch = useDispatch();
@@ -25,6 +27,12 @@ export const Modify = () => {
   const storedTasklist = useSelector(selectTasklist);
 
   const [editedTasklist, setEditedTasklist] = useState(storedTasklist);
+
+  const { isLoading, data } = useGetTasklistByIdQuery(storedTasklist.id);
+
+  if (isLoading) {
+    return <LinearProgress />;
+  }
 
   const handleChange = (e) => {
     setEditedTasklist({
@@ -48,6 +56,86 @@ export const Modify = () => {
       }),
     });
     dispatch(setTasklist(editedTasklist));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const {
+      title: editedTitle,
+      status: editedStatus,
+      description: editedDescription,
+      tasks: editedTasks,
+    } = editedTasklist;
+
+    const {
+      title: serverTitle,
+      status: serverStatus,
+      description: serverDescription,
+      tasks: serverTasks,
+    } = data;
+
+    const modifiedValues = {};
+    const modifiedTasks = [];
+
+    modifiedValues.id = data.id;
+
+    if (editedTitle !== serverTitle) {
+      modifiedValues.title = editedTitle;
+    }
+
+    if (editedStatus !== serverStatus) {
+      modifiedValues.status = editedStatus;
+    }
+
+    if (editedDescription !== serverDescription) {
+      modifiedValues.description = editedDescription;
+    }
+
+    console.log(editedTasks);
+
+    const taskIdsOnServer = serverTasks.map((task) => task.id);
+
+    editedTasks.forEach((task, i) => {
+      if (!taskIdsOnServer.includes(task.id)) {
+        const newTask = {
+          id: task.id,
+          title: task.title,
+          description: task.description,
+        };
+        if (task.notes) {
+          newTask.notes = task.notes;
+        }
+        if (parseInt(task.points) && !isNaN(parseInt(task.points))) {
+          newTask.points = parseInt(task.points);
+        }
+        modifiedTasks.push(newTask);
+      } else {
+        const modified = {};
+        const changed =
+          serverTasks[i] &&
+          (task.notes !== serverTasks[i].notes ||
+            (parseInt(task.points) !== serverTasks[i].points &&
+              !isNaN(parseInt(task.points))));
+        if (changed) {
+          if (task.notes !== serverTasks[i].notes) {
+            modified.notes = task.notes;
+          }
+          if (
+            parseInt(task.points) !== serverTasks[i].points &&
+            !isNaN(parseInt(task.points))
+          ) {
+            modified.points = parseInt(task.points);
+          }
+          modified.id = task.id;
+          modifiedTasks.push(modified);
+        }
+      }
+    });
+
+    modifiedValues.tasks = modifiedTasks;
+
+    console.log(modifiedValues);
   };
 
   const sumPoints = editedTasklist.tasks.reduce((acc, task) => {
@@ -100,7 +188,7 @@ export const Modify = () => {
     <Container>
       <Stack marginTop={2} gap={2}>
         <Typography variant="h5">Szerkesztés</Typography>
-        <form>
+        <form onSubmit={handleSubmit}>
           <Grid container spacing={3}>
             <Grid item xs={6}>
               <TextField

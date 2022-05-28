@@ -6,6 +6,7 @@ import {
   Card,
   Container,
   Divider,
+  Grid,
   LinearProgress,
   Pagination,
   Stack,
@@ -53,7 +54,7 @@ export const Tasklists = () => {
         {tasklist.status}
       </Typography>
       <Typography variant="body2" color="text.secondary">
-        {tasklist.description}
+        {tasklist.description === "" ? "Nincs megadva" : tasklist.description}
       </Typography>
       <Typography variant="body2" color="text.secondary">
         L: {tasklist.createdAt}
@@ -71,7 +72,8 @@ export const Tasklists = () => {
         Státusz: {tasklist.status}
       </Typography>
       <Typography variant="body2" color="text.secondary">
-        Leírás: {tasklist.description}
+        Leírás:{" "}
+        {tasklist.description === "" ? "Nincs megadva" : tasklist.description}
       </Typography>
       <Typography variant="body2" color="text.secondary">
         Létrehozva: {tasklist.createdAt}
@@ -89,18 +91,22 @@ export const Tasklists = () => {
 
   const tasks = (tasklist) =>
     tasklist.tasks.map((task) => (
-      <Stack key={task.id}>
-        <Typography variant="body1">{task.title}</Typography>
-        <Typography variant="body2" color="text.secondary">
-          Feladatleírás: {task.description}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Megjegyzés: {task.notes}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Pontszám: {task.points}
-        </Typography>
-      </Stack>
+      <Grid item xs={4} key={task.id}>
+        <Card variant="outlined">
+          <Stack padding={2}>
+            <Typography variant="body1">{task.title}</Typography>
+            <Typography variant="body2" color="text.secondary">
+              Feladatleírás: {task.description}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Megjegyzés: {!task.notes ? "Nincs megadva" : task.notes}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Pontszám: {task.points}
+            </Typography>
+          </Stack>
+        </Card>
+      </Grid>
     ));
 
   const tasklists = data.data.map((tasklist) => (
@@ -127,14 +133,12 @@ export const Tasklists = () => {
               </Stack>
               <Stack gap={1}>
                 <Typography variant="h6">Feladatok</Typography>
-                <Divider />
-                <Stack
-                  direction="row"
-                  spacing={4}
-                  divider={<Divider orientation="vertical" flexItem />}
-                >
+                {tasklist.tasks.length === 0 && (
+                  <Typography variant="body1"> Nincs megadva</Typography>
+                )}
+                <Grid container spacing={2}>
                   {tasks(tasklist)}
-                </Stack>
+                </Grid>
               </Stack>
             </Stack>
           </AccordionDetails>

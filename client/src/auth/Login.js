@@ -112,7 +112,11 @@ export const Login = () => {
               <Button type="submit" variant="outlined" fullWidth>
                 Bejelentkezés
               </Button>
-              {errors.login && <Alert variant="outlined" severity="error">{errors.login}</Alert>}
+              {errors.login && (
+                <Alert variant="outlined" severity="error">
+                  {errors.login}
+                </Alert>
+              )}
             </Stack>
           </form>
         </Card>

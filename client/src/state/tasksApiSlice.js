@@ -109,4 +109,6 @@ export const {
   useGetTaskslistsWithPaginateQuery,
   useLoginMutation,
   useRegisterMutation,
+  useModifyTasklistMutation,
+  useGetTasklistByIdQuery,
 } = tasksApiSlice;

@@ -119,7 +119,9 @@ export const Register = () => {
               </Button>
 
               {errors.register && (
-                <Alert variant="outlined" severity="error">{errors.register}</Alert>
+                <Alert variant="outlined" severity="error">
+                  {errors.register}
+                </Alert>
               )}
             </Stack>
           </form>

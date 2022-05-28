@@ -10,6 +10,8 @@ import { Tasklists } from "./site/Tasklists";
 import { RequireAuth } from "./auth/RequireAuth";
 import { Profile } from "./site/Profile";
 import { Modify } from "./site/Modify";
+import { RequireStored } from "./auth/RequireStored";
+import { NotFound } from "./navigation/NotFound";
 
 const darkTheme = createTheme({
   palette: {
@@ -37,23 +39,18 @@ function App() {
           <CssBaseline />
           <NavBar isDark={isDark} setTheme={toggleThemeHandler} />
           <Routes>
-            <Route path="*" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route path="/regisztracio" element={<Register />} />
             <Route path="/bejelentkezes" element={<Login />} />
             <Route path="/feladatbank" element={<Tasks />} />
-            <Route
-              path="/feladatsoraim"
-              element={<RequireAuth component={<Tasklists />} />}
-            />
-            <Route
-              path="/szerkesztes"
-              element={<RequireAuth component={<Modify />} />}
-            />
-
-            <Route
-              path="/profil"
-              element={<RequireAuth component={<Profile />} />}
-            />
+            <Route element={<RequireAuth />}>
+              <Route path="/feladatsoraim" element={<Tasklists />} />
+              <Route element={<RequireStored />}>
+                <Route path="/szerkesztes" element={<Modify />} />
+              </Route>
+              <Route path="/profil" element={<Profile />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

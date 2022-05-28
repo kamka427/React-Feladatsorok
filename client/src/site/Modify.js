@@ -1,9 +1,10 @@
 import {
+  Alert,
   Button,
   FormControl,
+  FormHelperText,
   Grid,
   InputLabel,
-  LinearProgress,
   MenuItem,
   Select,
   Stack,
@@ -14,128 +15,120 @@ import { Container } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteTasklist,
+  selectModifiedValues,
   selectTasklist,
-  setTasklist,
+  updateTasklist,
 } from "../state/tasklistSlice";
-import { useNavigate } from "react-router-dom";
 import { Fragment, useState } from "react";
-import { useGetTasklistByIdQuery } from "../state/tasksApiSlice";
+import {
+  useCreateTasklistMutation,
+  useModifyTasklistMutation,
+} from "../state/tasksApiSlice";
 
 export const Modify = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const storedTasklist = useSelector(selectTasklist);
+  const storedModifiedValues = useSelector(selectModifiedValues);
 
   const [editedTasklist, setEditedTasklist] = useState(storedTasklist);
+  const [modifiedValues, setModifiedValues] = useState(storedModifiedValues);
+  const [errors, setErrors] = useState({});
 
-  const { isLoading, data } = useGetTasklistByIdQuery(storedTasklist.id);
-
-  if (isLoading) {
-    return <LinearProgress />;
-  }
+  const [tasklistCreate] = useCreateTasklistMutation();
+  const [tasklistModify] = useModifyTasklistMutation();
 
   const handleChange = (e) => {
     setEditedTasklist({
       ...editedTasklist,
       [e.target.name]: e.target.value,
     });
-    dispatch(setTasklist(editedTasklist));
+    setModifiedValues({
+      ...modifiedValues,
+      [e.target.name]: e.target.value,
+    });
+    dispatch(
+      updateTasklist({
+        tasklist: editedTasklist,
+        modifiedValues: modifiedValues,
+      })
+    );
   };
-
   const handleTaskChange = (e, id) => {
     setEditedTasklist({
       ...editedTasklist,
       tasks: editedTasklist.tasks.map((task) => {
-        if (task.id === id) {
-          return {
-            ...task,
-            [e.target.name]: e.target.value,
-          };
-        }
-        return task;
+        return task.id === id
+          ? { ...task, [e.target.name]: e.target.value }
+          : task;
       }),
     });
-    dispatch(setTasklist(editedTasklist));
+    setModifiedValues({
+      ...modifiedValues,
+      tasks: modifiedValues.tasks.map((task) => {
+        return task.id === id
+          ? { ...task, [e.target.name]: e.target.value }
+          : task;
+      }),
+    });
+    dispatch(
+      updateTasklist({
+        tasklist: editedTasklist,
+        modifiedValues: modifiedValues,
+      })
+    );
   };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const {
-      title: editedTitle,
-      status: editedStatus,
-      description: editedDescription,
-      tasks: editedTasks,
-    } = editedTasklist;
+    const newErrors = {};
 
-    const {
-      title: serverTitle,
-      status: serverStatus,
-      description: serverDescription,
-      tasks: serverTasks,
-    } = data;
-
-    const modifiedValues = {};
-    const modifiedTasks = [];
-
-    modifiedValues.id = data.id;
-
-    if (editedTitle !== serverTitle) {
-      modifiedValues.title = editedTitle;
+    if (editedTasklist.title === "") {
+      newErrors.title = "Nem adott meg címet";
+    }
+    if (editedTasklist.status === "") {
+      newErrors.status = "Nem adott meg státuszt";
     }
 
-    if (editedStatus !== serverStatus) {
-      modifiedValues.status = editedStatus;
-    }
-
-    if (editedDescription !== serverDescription) {
-      modifiedValues.description = editedDescription;
-    }
-
-    console.log(editedTasks);
-
-    const taskIdsOnServer = serverTasks.map((task) => task.id);
-
-    editedTasks.forEach((task, i) => {
-      if (!taskIdsOnServer.includes(task.id)) {
-        const newTask = {
-          id: task.id,
-          title: task.title,
-          description: task.description,
-        };
-        if (task.notes) {
-          newTask.notes = task.notes;
-        }
-        if (parseInt(task.points) && !isNaN(parseInt(task.points))) {
-          newTask.points = parseInt(task.points);
-        }
-        modifiedTasks.push(newTask);
-      } else {
-        const modified = {};
-        const changed =
-          serverTasks[i] &&
-          (task.notes !== serverTasks[i].notes ||
-            (parseInt(task.points) !== serverTasks[i].points &&
-              !isNaN(parseInt(task.points))));
-        if (changed) {
-          if (task.notes !== serverTasks[i].notes) {
-            modified.notes = task.notes;
-          }
-          if (
-            parseInt(task.points) !== serverTasks[i].points &&
-            !isNaN(parseInt(task.points))
-          ) {
-            modified.points = parseInt(task.points);
-          }
-          modified.id = task.id;
-          modifiedTasks.push(modified);
-        }
-      }
+    editedTasklist.tasks.forEach((task) => {
+      if (task.points === "" || !task.points)
+        newErrors[task.id] = "Nem adott meg pontszámot";
     });
 
-    modifiedValues.tasks = modifiedTasks;
+    setErrors({ ...newErrors });
 
-    console.log(modifiedValues);
+    if (Object.values(newErrors).length > 0) {
+      return;
+    }
+
+    if (!editedTasklist.id) {
+      try {
+        console.log(editedTasklist);
+        const res = await tasklistCreate(editedTasklist).unwrap();
+        console.log(res);
+        dispatch(deleteTasklist());
+      } catch (err) {
+        newErrors.create = "Hiba történt a mentés során";
+        setErrors({ ...newErrors });
+      }
+      return;
+    }
+
+    try {
+      console.log(modifiedValues);
+      const res = await tasklistModify({
+        ...modifiedValues,
+        id: editedTasklist.id,
+      }).unwrap();
+      console.log(res);
+      dispatch(deleteTasklist());
+    } catch (err) {
+      newErrors.create = "Hiba történt a módosítás során";
+      setErrors({ ...newErrors });
+    }
+  };
+
+  const handleDeleteTasklist = () => {
+    dispatch(deleteTasklist());
   };
 
   const sumPoints = editedTasklist.tasks.reduce((acc, task) => {
@@ -166,7 +159,7 @@ export const Modify = () => {
         <TextField
           label="Feladat megjegyzése"
           name="notes"
-          value={task.notes}
+          value={task.notes || ""}
           fullWidth
           onChange={(e) => handleTaskChange(e, task.id)}
         />
@@ -176,7 +169,9 @@ export const Modify = () => {
           label="Feladat pontszáma"
           name="points"
           type="number"
-          value={task.points}
+          value={task.points || ""}
+          error={errors[task.id] !== undefined}
+          helperText={errors[task.id]}
           fullWidth
           onChange={(e) => handleTaskChange(e, task.id)}
         />
@@ -194,32 +189,35 @@ export const Modify = () => {
               <TextField
                 label="Cím"
                 name="title"
+                error={errors.title !== undefined}
+                helperText={errors.title}
                 fullWidth
-                value={editedTasklist.title}
+                value={editedTasklist.title || ""}
                 onChange={handleChange}
               />
             </Grid>
             <Grid item xs={6}>
-              <FormControl fullWidth>
+              <FormControl fullWidth error={errors.status !== undefined}>
                 <InputLabel id="status">Státusz</InputLabel>
                 <Select
                   label="Státusz"
                   name="status"
                   labelId="status"
                   defaultValue="draft"
-                  value={editedTasklist.status}
+                  value={editedTasklist.status || ""}
                   onChange={handleChange}
                 >
                   <MenuItem value="draft">Draft</MenuItem>
                   <MenuItem value="published">Published</MenuItem>
                 </Select>
+                <FormHelperText>{errors.status}</FormHelperText>
               </FormControl>
             </Grid>
             <Grid item xs={6}>
               <TextField
                 label="Leírás"
                 name="description"
-                value={editedTasklist.description}
+                value={editedTasklist.description || ""}
                 onChange={handleChange}
                 fullWidth
               />
@@ -259,16 +257,18 @@ export const Modify = () => {
                 variant="outlined"
                 fullWidth
                 color="error"
-                onClick={() => {
-                  navigate("/feladatsoraim", { replace: true });
-                  dispatch(deleteTasklist());
-                }}
+                onClick={handleDeleteTasklist}
               >
                 Szerkesztés lezárása
               </Button>
             </Grid>
           </Grid>
         </form>
+        {errors.create && (
+          <Alert variant="outlined" severity="error">
+            {errors.create}
+          </Alert>
+        )}
       </Stack>
     </Container>
   );

@@ -1,77 +1,65 @@
-import { Button, Container, Link, Stack, Tab, Tabs } from "@mui/material";
+import { Button, Container, Divider, Link, Stack } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectLoggedInUser } from "../state/authSlice";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { selectTasklist } from "../state/tasklistSlice";
 
 export const NavBar = ({ isDark, setTheme }) => {
   const user = useSelector(selectLoggedInUser);
+  const tasklist = useSelector(selectTasklist);
 
   const dispatch = useDispatch();
 
-  const [activeTab, setActiveTab] = useState(false);
-
-  useEffect(() => {
-    setActiveTab(
-      ["/feladatbank", "/feladatsoraim", "/szerkesztes"].includes(
-        window.location.pathname
-      )
-        ? window.location.pathname
-        : false
-    );
-  }, []);
-
-  const handleTabChange = (event, newValue) => {
-    setActiveTab(newValue);
-  };
-
-  const resetTab = () => {
-    setActiveTab(false);
-  };
-
   return (
     <Container>
-      <Stack direction="row" justifyContent="space-between">
+      <Stack direction="row" justifyContent="space-between" paddingY={1}>
         <Stack direction="row" alignItems="center" gap={2}>
           <Link
             variant="h6"
             component={RouterLink}
-            onClick={resetTab}
             to="/"
             color="inherit"
             underline="none"
+            marginRight={1}
           >
             React feladatsorok
           </Link>
-          <Tabs value={activeTab} onChange={handleTabChange}>
-            <Tab
-              label="Feladatbank"
-              value="/feladatbank"
+          <Button
+            label="Feladatbank"
+            value="/feladatbank"
+            component={RouterLink}
+            to="/feladatbank"
+            color="inherit"
+          >
+            Feladatbank
+          </Button>
+          {user && (
+            <Button
+              label="Feladatsoraim"
+              value="/feladatsoraim"
               component={RouterLink}
-              to="/feladatbank"
-            />
-            {user && (
-              <Tab
-                label="Feladatsoraim"
-                value="/feladatsoraim"
-                component={RouterLink}
-                to="/feladatsoraim"
-              />
-            )}
-            {user && (
-              <Tab
-                label="Szerkesztett feladatsor"
-                value="/szerkesztes"
-                component={RouterLink}
-                to="/szerkesztes"
-              />
-            )}
-          </Tabs>
+              to="/feladatsoraim"
+              color="inherit"
+            >
+              Feladatsoraim
+            </Button>
+          )}
+          {user && tasklist && (
+            <Button
+              label="Szerkesztett feladatsor"
+              value="/szerkesztes"
+              component={RouterLink}
+              to="/szerkesztes"
+              color="inherit"
+            >
+              Szerkesztett feladatsor
+            </Button>
+          )}
         </Stack>
         <Stack direction="row">
           {!user && (
@@ -80,7 +68,6 @@ export const NavBar = ({ isDark, setTheme }) => {
                 label="Bejelentkezés"
                 component={RouterLink}
                 to="/bejelentkezes"
-                onClick={resetTab}
               >
                 Bejelentkezés
               </Button>
@@ -90,35 +77,29 @@ export const NavBar = ({ isDark, setTheme }) => {
                 component={RouterLink}
                 to="/regisztracio"
                 color="secondary"
-                onClick={resetTab}
               >
                 Regisztráció
               </Button>
             </>
           )}
           {user && (
-            <Button
-              label="Kijelentkezés"
-              component={RouterLink}
-              to="/"
-              onClick={() => {
-                dispatch(logout());
-                resetTab();
-              }}
-              color="error"
-            >
-              Kijelentkezés
-            </Button>
-          )}
-          {user && (
-            <Button
-              component={RouterLink}
-              to="/profil"
-              color="inherit"
-              onClick={resetTab}
-            >
-              <AccountCircleIcon />
-            </Button>
+            <>
+              <Button
+                label="Kijelentkezés"
+                component={RouterLink}
+                to="/"
+                onClick={() => {
+                  dispatch(logout());
+                }}
+                color="error"
+              >
+                Kijelentkezés
+              </Button>
+
+              <Button component={RouterLink} to="/profil" color="inherit">
+                <AccountCircleIcon />
+              </Button>
+            </>
           )}
           <Button
             value={isDark}
@@ -130,6 +111,7 @@ export const NavBar = ({ isDark, setTheme }) => {
           </Button>
         </Stack>
       </Stack>
+      <Divider />
     </Container>
   );
 };

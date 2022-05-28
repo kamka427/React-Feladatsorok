@@ -16,7 +16,7 @@ import { useRegisterMutation } from "../state/tasksApiSlice";
 export const Register = () => {
   const [data, setData] = useState({
     name: "",
-    username: "",
+    email: "",
     password: "",
   });
   const [errors, setErrors] = useState({});
@@ -26,17 +26,17 @@ export const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { name, username, password } = data;
+    const { name, email, password } = data;
     const newErrors = {};
 
     if (name === "") {
-      newErrors.name = "Name is required";
+      newErrors.name = "Kérem adja meg a nevét";
     }
-    if (username === "") {
-      newErrors.username = "Username is required";
+    if (email === "") {
+      newErrors.email = "Kérem adja meg az email címét";
     }
     if (password === "") {
-      newErrors.password = "Password is required";
+      newErrors.password = "Kérem adja meg a jelszavát";
     }
 
     setErrors({ ...newErrors });
@@ -47,7 +47,7 @@ export const Register = () => {
 
     try {
       await authRegister({
-        email: username,
+        email: email,
         password: password,
         fullname: name,
       }).unwrap();
@@ -93,13 +93,13 @@ export const Register = () => {
               />
               <TextField
                 id="email"
-                name="username"
+                name="email"
                 label="Email cím"
                 type="email"
                 autoComplete="email"
-                error={errors.username !== undefined}
-                helperText={errors.username}
-                value={data.username}
+                error={errors.email !== undefined}
+                helperText={errors.email}
+                value={data.email}
                 onChange={handleChange}
               />
               <TextField

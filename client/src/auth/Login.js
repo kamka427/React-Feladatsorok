@@ -17,7 +17,7 @@ import { login } from "../state/authSlice";
 
 export const Login = () => {
   const [data, setData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const [errors, setErrors] = useState({});
@@ -28,14 +28,14 @@ export const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { username, password } = data;
+    const { email, password } = data;
     const newErrors = {};
 
-    if (username === "") {
-      newErrors.username = "Username is required";
+    if (email === "") {
+      newErrors.email = "Kérem adja meg az email címét";
     }
     if (password === "") {
-      newErrors.password = "Password is required";
+      newErrors.password = "Kérem adja meg a jelszavát";
     }
 
     setErrors({ ...newErrors });
@@ -47,7 +47,7 @@ export const Login = () => {
     try {
       const result = await authLogin({
         strategy: "local",
-        email: username,
+        email: email,
         password: password,
       }).unwrap();
       dispatch(
@@ -88,13 +88,13 @@ export const Login = () => {
             <Stack gap={3} paddingY={3} paddingX={3}>
               <TextField
                 id="email"
-                name="username"
+                name="email"
                 label="Email cím"
                 type="email"
                 autoComplete="email"
-                error={errors.username !== undefined}
-                helperText={errors.username}
-                value={data.username}
+                error={errors.email !== undefined}
+                helperText={errors.email}
+                value={data.email}
                 onChange={handleChange}
                 autoFocus
               />

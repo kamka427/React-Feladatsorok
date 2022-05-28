@@ -11,7 +11,6 @@ const baseQuery = fetchBaseQuery({
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);
     }
-
     return headers;
   },
 });
@@ -19,24 +18,14 @@ const baseQuery = fetchBaseQuery({
 export const tasksApiSlice = createApi({
   reducerPath: "tasksApi",
   baseQuery,
+  refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({
-    getTasks: builder.query({
-      query: () => ({
-        url: "tasks",
-      }),
-    }),
-
     getTasksWithPaginate: builder.query({
       query: (page) => ({
         url: `tasks?$skip=${page * 10}&$limit=10`,
       }),
     }),
 
-    getTaskById: builder.query({
-      query: (id) => ({
-        url: `tasks/${id}`,
-      }),
-    }),
     getTasklists: builder.query({
       query: () => ({
         url: "tasklists",
@@ -49,36 +38,21 @@ export const tasksApiSlice = createApi({
       }),
     }),
 
-    getTasklistById: builder.query({
-      query: (id) => ({
-        url: `tasklists/${id}`,
-      }),
-    }),
-
     createTasklist: builder.mutation({
-      mutation: (task) => ({
+      query: (body) => ({
         url: "tasklists",
         method: "POST",
-        body: {
-          ...task,
-        },
+        body,
       }),
     }),
 
     modifyTasklist: builder.mutation({
-      mutation: (task) => ({
+      query: (task) => ({
         url: `tasklists/${task.id}`,
         method: "PATCH",
         body: {
           ...task,
         },
-      }),
-    }),
-
-    deleteTasklist: builder.mutation({
-      mutation: (id) => ({
-        url: `tasklists/${id}`,
-        method: "DELETE",
       }),
     }),
 
@@ -107,8 +81,8 @@ export const {
   useGetTasksWithPaginateQuery,
   useGetTasklistsQuery,
   useGetTaskslistsWithPaginateQuery,
-  useLoginMutation,
-  useRegisterMutation,
+  useCreateTasklistMutation,
   useModifyTasklistMutation,
-  useGetTasklistByIdQuery,
+  useRegisterMutation,
+  useLoginMutation,
 } = tasksApiSlice;

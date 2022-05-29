@@ -30,7 +30,16 @@ export const Modify = () => {
   const storedTasklist = useSelector(selectTasklist);
   const storedModifiedValues = useSelector(selectModifiedValues);
 
-  const [editedTasklist, setEditedTasklist] = useState(storedTasklist);
+  const [editedTasklist, setEditedTasklist] = useState({
+    ...storedTasklist,
+    // Szöveggé kell alakítani a pontokat,
+    // hogy a 0 pontos értékek megjelenjenek a form-ban és
+    // ne dobjanak Nem adott meg pontszámot validációs hibát.
+    tasks: storedTasklist.tasks.map((task) => ({
+      ...task,
+      points: task.points >= 0 ? "" + task.points : "",
+    })),
+  });
   const [modifiedValues, setModifiedValues] = useState(storedModifiedValues);
   const [errors, setErrors] = useState({});
 
@@ -38,6 +47,7 @@ export const Modify = () => {
   const [tasklistModify] = useModifyTasklistMutation();
 
   useEffect(() => {
+    console.log(editedTasklist);
     dispatch(
       updateTasklist({
         tasklist: editedTasklist,
@@ -89,7 +99,8 @@ export const Modify = () => {
     editedTasklist.tasks.forEach((task) => {
       if (task.points === "" || !task.points)
         newErrors[task.id] = "Nem adott meg pontszámot";
-      if (task.points < 0) newErrors[task.id] = "Pontszám nem lehet negatív";
+      if (task.points < 0)
+        newErrors[task.id] = "A pontszám értéke nem lehet negatív";
     });
 
     setErrors({ ...newErrors });

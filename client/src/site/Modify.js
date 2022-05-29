@@ -19,7 +19,7 @@ import {
   selectTasklist,
   updateTasklist,
 } from "../state/tasklistSlice";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   useCreateTasklistMutation,
   useModifyTasklistMutation,
@@ -37,6 +37,15 @@ export const Modify = () => {
   const [tasklistCreate] = useCreateTasklistMutation();
   const [tasklistModify] = useModifyTasklistMutation();
 
+  useEffect(() => {
+    dispatch(
+      updateTasklist({
+        tasklist: editedTasklist,
+        modifiedValues: modifiedValues,
+      })
+    );
+  }, [dispatch, editedTasklist, modifiedValues]);
+
   const handleChange = (e) => {
     setEditedTasklist({
       ...editedTasklist,
@@ -46,12 +55,6 @@ export const Modify = () => {
       ...modifiedValues,
       [e.target.name]: e.target.value,
     });
-    dispatch(
-      updateTasklist({
-        tasklist: editedTasklist,
-        modifiedValues: modifiedValues,
-      })
-    );
   };
   const handleTaskChange = (e, id) => {
     setEditedTasklist({
@@ -70,12 +73,6 @@ export const Modify = () => {
           : task;
       }),
     });
-    dispatch(
-      updateTasklist({
-        tasklist: editedTasklist,
-        modifiedValues: modifiedValues,
-      })
-    );
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -92,6 +89,7 @@ export const Modify = () => {
     editedTasklist.tasks.forEach((task) => {
       if (task.points === "" || !task.points)
         newErrors[task.id] = "Nem adott meg pontszámot";
+      if (task.points < 0) newErrors[task.id] = "Pontszám nem lehet negatív";
     });
 
     setErrors({ ...newErrors });

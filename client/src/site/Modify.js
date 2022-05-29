@@ -243,7 +243,18 @@ export const Modify = () => {
               <TextField
                 label="Létrehozás dátuma"
                 disabled
-                value={editedTasklist.createdAt}
+                value={
+                  editedTasklist.createdAt
+                    ? new Date(editedTasklist.createdAt).toLocaleDateString(
+                        "hu-HU",
+                        {
+                          hour: "numeric",
+                          minute: "numeric",
+                          second: "numeric",
+                        }
+                      )
+                    : "Még nincs létrehozva"
+                }
                 fullWidth
               />
             </Grid>
@@ -251,7 +262,18 @@ export const Modify = () => {
               <TextField
                 label="Utolsó módosítás dátuma"
                 disabled
-                value={editedTasklist.updatedAt}
+                value={
+                  editedTasklist.updatedAt
+                    ? new Date(editedTasklist.updatedAt).toLocaleDateString(
+                        "hu-HU",
+                        {
+                          hour: "numeric",
+                          minute: "numeric",
+                          second: "numeric",
+                        }
+                      )
+                    : "Még nem volt módosítva"
+                }
                 fullWidth
               />
             </Grid>

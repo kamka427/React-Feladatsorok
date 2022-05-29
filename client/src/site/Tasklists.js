@@ -57,10 +57,23 @@ export const Tasklists = () => {
         {tasklist.description === "" ? "Nincs megadva" : tasklist.description}
       </Typography>
       <Typography variant="body2" color="text.secondary">
-        L: {tasklist.createdAt}
+        {tasklist.tasks.length || "Nincsenek feladatok"}
       </Typography>
       <Typography variant="body2" color="text.secondary">
-        M: {tasklist.updatedAt}
+        L:{" "}
+        {new Date(tasklist.createdAt).toLocaleDateString("hu-HU", {
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+        })}
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        M:{" "}
+        {new Date(tasklist.updatedAt).toLocaleDateString("hu-HU", {
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+        })}
       </Typography>
     </Stack>
   );
@@ -76,14 +89,24 @@ export const Tasklists = () => {
         {tasklist.description === "" ? "Nincs megadva" : tasklist.description}
       </Typography>
       <Typography variant="body2" color="text.secondary">
-        Létrehozva: {tasklist.createdAt}
+        Létrehozás dátuma:{" "}
+        {new Date(tasklist.createdAt).toLocaleDateString("hu-HU", {
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+        })}
       </Typography>
       <Typography variant="body2" color="text.secondary">
-        Utoljára módosítva: {tasklist.updatedAt}
+        Utolsó módosítás dátuma:{" "}
+        {new Date(tasklist.updatedAt).toLocaleDateString("hu-HU", {
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+        })}
       </Typography>
       <Typography variant="body2" color="text.secondary"></Typography>
       <Typography variant="body2" color="text.secondary">
-        Pontok összesítve:{" "}
+        Összpontszám:{" "}
         {tasklist.tasks.reduce((acc, task) => acc + task.points, 0)}
       </Typography>
     </Stack>
@@ -147,6 +170,7 @@ export const Tasklists = () => {
           (storedTasklist && tasklist.id !== storedTasklist.id)) && (
           <Button
             color="primary"
+            disabled={storedTasklist}
             onClick={() => {
               navigate("/szerkesztes", { replace: true });
               dispatch(setTasklist(tasklist));
@@ -183,8 +207,9 @@ export const Tasklists = () => {
             <Typography variant="overline">Cím</Typography>
             <Typography variant="overline">Státusz</Typography>
             <Typography variant="overline">Leírás</Typography>
-            <Typography variant="overline">Létrehozás</Typography>
-            <Typography variant="overline">Utolsó módosítás</Typography>
+            <Typography variant="overline">Feladatok száma</Typography>
+            <Typography variant="overline">Létrehozás dátuma</Typography>
+            <Typography variant="overline">Utolsó módosítás dátuma</Typography>
           </Stack>
           <Button
             color="primary"

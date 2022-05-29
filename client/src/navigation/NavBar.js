@@ -1,19 +1,21 @@
 import { Button, Container, Divider, Link, Stack } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectLoggedInUser } from "../state/authSlice";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { selectTasklist } from "../state/tasklistSlice";
+import { deleteTasklist, selectTasklist } from "../state/tasklistSlice";
 
 export const NavBar = ({ isDark, setTheme }) => {
   const user = useSelector(selectLoggedInUser);
   const tasklist = useSelector(selectTasklist);
-
   const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(deleteTasklist());
+  };
 
   return (
     <Container>
@@ -27,7 +29,7 @@ export const NavBar = ({ isDark, setTheme }) => {
             underline="none"
             marginRight={1}
           >
-            React feladatsorok
+            React Feladatsorok
           </Link>
           <Button
             label="Feladatbank"
@@ -88,9 +90,7 @@ export const NavBar = ({ isDark, setTheme }) => {
                 label="Kijelentkezés"
                 component={RouterLink}
                 to="/"
-                onClick={() => {
-                  dispatch(logout());
-                }}
+                onClick={handleLogout}
                 color="error"
               >
                 Kijelentkezés

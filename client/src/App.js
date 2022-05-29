@@ -33,28 +33,26 @@ function App() {
   const theme = isDark ? darkTheme : lightTheme;
 
   return (
-    <>
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <CssBaseline />
-          <NavBar isDark={isDark} setTheme={toggleThemeHandler} />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/regisztracio" element={<Register />} />
-            <Route path="/bejelentkezes" element={<Login />} />
-            <Route path="/feladatbank" element={<Tasks />} />
-            <Route element={<RequireAuth />}>
-              <Route path="/feladatsoraim" element={<Tasklists />} />
-              <Route element={<RequireStored />}>
-                <Route path="/szerkesztes" element={<Modify />} />
-              </Route>
-              <Route path="/profil" element={<Profile />} />
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <CssBaseline />
+        <NavBar isDark={isDark} setTheme={toggleThemeHandler} />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/regisztracio" element={<Register />} />
+          <Route path="/bejelentkezes" element={<Login />} />
+          <Route path="/feladatbank" element={<Tasks />} />
+          <Route element={<RequireAuth />}>
+            <Route path="/feladatsoraim" element={<Tasklists />} />
+            <Route element={<RequireStored />}>
+              <Route path="/szerkesztes" element={<Modify />} />
             </Route>
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </ThemeProvider>
-    </>
+            <Route path="/profil" element={<Profile />} />
+          </Route>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

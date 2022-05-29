@@ -12,11 +12,18 @@ import { logout, selectLoggedInUser } from "../state/authSlice";
 import { Link as RouterLink } from "react-router-dom";
 import { useGetTasklistsQuery } from "../state/tasksApiSlice";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { deleteTasklist } from "../state/tasklistSlice";
 
 export const Profile = () => {
   const user = useSelector(selectLoggedInUser);
   const dispatch = useDispatch();
   const { isLoading, data } = useGetTasklistsQuery();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(deleteTasklist());
+  };
+
   return (
     <Container maxWidth="xs">
       <Stack marginTop={3}>
@@ -47,9 +54,7 @@ export const Profile = () => {
               label="Kijelentkezés"
               component={RouterLink}
               to="/"
-              onClick={() => {
-                dispatch(logout());
-              }}
+              onClick={handleLogout}
               color="error"
               variant="outlined"
             >

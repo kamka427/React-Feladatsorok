@@ -168,45 +168,43 @@ export const Tasklists = () => {
   ));
 
   return (
-    <>
-      <Container>
-        <Stack marginTop={2} gap={2}>
-          <Typography variant="h5">Feladatsoraim</Typography>
-          <Stack direction="row">
-            <Stack
-              flex={1}
-              spacing={4}
-              direction="row"
-              alignItems="center"
-              divider={<Divider orientation="vertical" flexItem />}
-              marginLeft={2}
-            >
-              <Typography variant="overline">Cím</Typography>
-              <Typography variant="overline">Státusz</Typography>
-              <Typography variant="overline">Leírás</Typography>
-              <Typography variant="overline">Létrehozás</Typography>
-              <Typography variant="overline">Utolsó módosítás</Typography>
-            </Stack>
-            <Button
-              color="primary"
-              variant="outlined"
-              onClick={() => {
-                navigate("/szerkesztes", { replace: true });
-                dispatch(createTasklist());
-              }}
-            >
-              Új feladatsor
-            </Button>
+    <Container>
+      <Stack marginTop={2} gap={2}>
+        <Typography variant="h5">Feladatsoraim</Typography>
+        <Stack direction="row">
+          <Stack
+            flex={1}
+            spacing={4}
+            direction="row"
+            alignItems="center"
+            divider={<Divider orientation="vertical" flexItem />}
+            marginLeft={2}
+          >
+            <Typography variant="overline">Cím</Typography>
+            <Typography variant="overline">Státusz</Typography>
+            <Typography variant="overline">Leírás</Typography>
+            <Typography variant="overline">Létrehozás</Typography>
+            <Typography variant="overline">Utolsó módosítás</Typography>
           </Stack>
-          <Stack gap={2}>{tasklists}</Stack>
+          <Button
+            color="primary"
+            variant="outlined"
+            onClick={() => {
+              navigate("/szerkesztes", { replace: true });
+              dispatch(createTasklist());
+            }}
+          >
+            Új feladatsor
+          </Button>
         </Stack>
-        <Stack alignItems="center" marginTop={3}>
-          <Pagination
-            count={calculateLastPage(data)}
-            onChange={handlePageChange}
-          />
-        </Stack>
-      </Container>
-    </>
+        <Stack gap={2}>{tasklists}</Stack>
+      </Stack>
+      <Stack alignItems="center" marginTop={3}>
+        <Pagination
+          count={calculateLastPage(data)}
+          onChange={handlePageChange}
+        />
+      </Stack>
+    </Container>
   );
 };

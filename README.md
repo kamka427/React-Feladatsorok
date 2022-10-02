@@ -1,8 +1,8 @@
-# Feladatsorok alkalmazás Reactban
+# Feladatsorok alkalmazás React-ben
 
 Egy előre megadott rest api-hoz implementált kliensoldali alkalmazás. \
 Az alkalmazásban bejelentkezéssel feladatsorok kezelésére van lehetőség. \
-```A futtatáshoz klónozd le a mappát és npm i-vel telepítsd fel a dependenciáikat, majd npm startt-al futtasd mindkét projektet```
+```A futtatáshoz klónozd le a mappát, cd a client és rest-api mappákba és npm i-vel telepítsd fel a dependenciáikat, majd npm start-tal futtasd mindkét projektet```
 > Node 17-es verzión készült
 
 <img width="1235" alt="Képernyőfotó 2022-10-02 - 11 57 26" src="https://user-images.githubusercontent.com/73647069/193448487-a328986f-7cd4-4816-8228-7ee12aa73775.png">

@@ -7,6 +7,7 @@ The app supports:
 - Creating task lists from the tasks in the databases
 - Browsing and modifying the task lists
 - The validation of every field in the forms
+- Light and Dark themes
 
 ## How to run
 ```

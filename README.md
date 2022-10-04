@@ -1,9 +1,20 @@
-# Feladatsorok alkalmazás React-ben
+# Test creator app in React
 
-Egy előre megadott rest api-hoz implementált kliensoldali alkalmazás. \
-Az alkalmazásban bejelentkezéssel feladatsorok kezelésére van lehetőség. \
-```A futtatáshoz klónozd le a mappát, cd a client és rest-api mappákba és npm i-vel telepítsd fel a dependenciáikat, majd npm start-tal futtasd mindkét projektet```
-> Node 17-es verzión készült
+## Summary
+Implementation of the client side of the application, the API was provided for the course. \
+The app supports:
+- Registering and logging in
+- Creating task lists from the tasks in the databases
+- Browsing and modifying the task lists
+- The validation of every field in the forms
+
+## How to run
+```
+First, clone the folder and navigate to the subfolders.
+In the client and rest-api folders, install the dependencies with npm install.
+Run the projects with npm start.
+```
+> This project uses Node 17
 
 <img width="1235" alt="Képernyőfotó 2022-10-02 - 11 57 26" src="https://user-images.githubusercontent.com/73647069/193448487-a328986f-7cd4-4816-8228-7ee12aa73775.png">
 <img width="1213" alt="Képernyőfotó 2022-10-02 - 11 57 38" src="https://user-images.githubusercontent.com/73647069/193448491-3cb53633-3969-4fda-80d4-5f9c850b1fa6.png">
